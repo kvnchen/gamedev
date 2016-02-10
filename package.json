@@ -1,0 +1,24 @@
+{
+  "name": "no-name-game",
+  "version": "0.0.1",
+  "description": "Command line version of magic LOOM demo",
+  "author": "Kelvin Chen <kelvin.c.chen@gmail.com>",
+  "main": "src/main.js",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:kvnchen/gamedev.git"
+  },
+  "keywords": [
+    "gamedev",
+    "demo",
+    "ihavenoideawhatimdoing"
+  ],
+  "dependencies": {
+    "underscore": "^1.8.3"
+  },
+  "preferGlobal": false,
+  "private": true,
+  "publishConfig": {
+    "registry": ""
+  }
+}
