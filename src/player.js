@@ -64,6 +64,7 @@ Player.prototype.getStatus = function() {
   status += 'Current health: ' + this.currentHealth + '/' + this.maxHealth + '\n';
   status += 'Known Spells: ' + this.getKnownSpells() + ' \n';
   status += 'Known Runes: ' + this.getKnownRunes() + ' \n';
+  status += 'Equipped Weapon: ' + (this.weapon ? this.weapon : 'none') + '\n';
 
   return status;
 };

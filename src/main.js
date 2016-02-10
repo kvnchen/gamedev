@@ -1,5 +1,5 @@
 // This is the beginning of my game project
-// First goal is to make a playable command-line version of the demo
+// First milestone is to make a playable command-line version of the demo
 
 var Player = require('./player.js');
 
