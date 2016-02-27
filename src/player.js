@@ -3,7 +3,8 @@
  */
 
 var _ = require('underscore'),
-    weapon = require('./weapon');
+    util = require('../utils/util'),
+    weapon = require('./weapon'),
     armor = require('./armor');
 
 function Player(name) {
@@ -18,6 +19,10 @@ function Player(name) {
   this.buffs = [];
   this.debuffs = [];
 }
+
+Player.prototype.loadProperties = function() {
+  return util.buildPropertyObjs('player');
+};
 
 Player.prototype.getCurrentHealth = function() {
   return this.currentHealth;  

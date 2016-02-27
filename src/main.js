@@ -7,3 +7,4 @@ var Player = require('./player.js'),
     status = kelvin.getStatus();
 
 console.log(status);
+console.log(kelvin.loadProperties());
