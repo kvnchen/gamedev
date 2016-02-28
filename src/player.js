@@ -12,16 +12,25 @@ function Player(name) {
   this.name = name;
   this.maxHealth = 20;
   this.currentHealth = 20;
-  this.spellBook = [];
-  this.knownRunes = [];
-  this.weapon = new weapon('Forked Oak Staff');
-  this.armor = new armor('Novice Robes');
+  this.spells = []; // known spells?
+  this.runes = [];
+  this.weapon = undefined;
+  this.armor = undefined;
   this.buffs = [];
   this.debuffs = [];
 }
 
 Player.prototype.loadProperties = function() {
-  return util.buildPropertyObjs('player');
+  var loadedData = util.buildPropertyObjs('player'),
+      self = this;
+
+  function insertLoaded(key) {
+    if (_.has(loadedData, key)) {
+      self[key] = loadedData[key];
+    }
+  }
+
+  _.each(_.keys(self), insertLoaded);
 };
 
 Player.prototype.getCurrentHealth = function() {
@@ -44,23 +53,23 @@ Player.prototype.takeHeal = function(heal) {
 };
 
 Player.prototype.getKnownSpells = function() {
-  if (this.spellBook.length === 0) {
+  if (this.spells.length === 0) {
     return 'none.';
   } else {
     var spells = '';
-    _.each(this.spellBook, function(spell) {
-      spells += spell.name;
+    _.each(this.spells, function(spell) {
+      spells += spell.name +', ';
     });
     return spells;
   }
 };
 
 Player.prototype.getKnownRunes = function() {
-  if (this.knownRunes.length === 0) {
+  if (this.runes.length === 0) {
     return 'none. Temporarily rip off D2 rune names';
   } else {
     var runes = '';
-    _.each(this.knownRunes, function(rune) {
+    _.each(this.runes, function(rune) {
       runes += rune.name;
     });
     return runes;
@@ -68,6 +77,8 @@ Player.prototype.getKnownRunes = function() {
 };
 
 Player.prototype.getStatus = function() {
+  this.loadProperties();
+
   var status = 'Status of ' + this.name + ':\n';
 
   status += 'Current health: ' + this.currentHealth + '/' + this.maxHealth + '\n';
