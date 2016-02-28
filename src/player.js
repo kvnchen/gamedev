@@ -8,11 +8,11 @@ var _ = require('underscore'),
     armor = require('./armor');
 
 function Player(name) {
-  // first define what basic properties a player has
+  // Default properties for a new player
   this.name = name;
   this.maxHealth = 20;
   this.currentHealth = 20;
-  this.spells = []; // known spells?
+  this.spells = [];
   this.runes = [];
   this.weapon = undefined;
   this.armor = undefined;

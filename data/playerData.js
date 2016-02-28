@@ -1,5 +1,7 @@
 /*
- *  Store Player Data here
+ *  Store saved player data here
+ *
+ *  Would this perform better if it were a .json or .txt file?
  */
 
 function getPlayerData() {
