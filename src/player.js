@@ -84,8 +84,8 @@ Player.prototype.getStatus = function() {
   status += 'Current health: ' + this.currentHealth + '/' + this.maxHealth + '\n';
   status += 'Known Spells: ' + this.getKnownSpells() + ' \n';
   status += 'Known Runes: ' + this.getKnownRunes() + ' \n';
-  status += 'Equipped Weapon: ' + (this.weapon ? this.weapon.name : 'none') + '\n';
-  status += 'Equipped Armor: ' + (this.armor ? this.armor.name : 'none') + '\n';
+  status += 'Equipped Weapon: ' + (this.weapon ? (this.weapon.name + ': ' + this.weapon.description) : 'none') + '\n';
+  status += 'Equipped Armor: ' + (this.armor ? (this.armor.name + ': ' + this.armor.description) : 'none') + '\n';
 
   return status;
 };

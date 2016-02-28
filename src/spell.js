@@ -11,6 +11,7 @@
   this.focus = undefined;
   this.type = undefined;
   this.school = undefined;
+  this.description = '';
 }
 
 module.exports = Spell;
