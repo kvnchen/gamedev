@@ -2,7 +2,8 @@
  *  Reindeer god boss
  */
 
-var enemy = require('./enemy');
+var enemy = require('./enemy'),
+    _ = require('underscore');
 
 function Reingod() {
   enemy.call(this, 'Reingod');
@@ -23,7 +24,15 @@ Reingod.prototype = Object.create(enemy.prototype);
 Reingod.prototype.constructor = Reingod;
 
 Reingod.prototype.charge = function(player) {
+  var playerDebuffs = player.getDebuffs();
+  console.log('The Reingod charges!!\n');
 
+  if (_.contains(playerDebuffs, 'frozen')) {
+    player.takeDamage(20);
+    console.log('A devastating blow!\n');
+  } else {
+    console.log('A narrow escape...\n');
+  }
 };
 
 module.exports = Reingod;

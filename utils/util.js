@@ -73,6 +73,22 @@ function Util() {
     });
     return result;
   };
+
+  this.getArrayProp = function(arr) {
+    if (arr && arr.length !== 0) {
+      var str = '';
+      _.each(arr, function(item) {
+        if (item.name) {
+          str += item.name +', ';
+        } else {
+          str += item + ', ';
+        }
+      });
+      return str;
+    } else { 
+      return 'none';
+    }
+  }
 }
 
 module.exports = new Util();

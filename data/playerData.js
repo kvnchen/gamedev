@@ -12,6 +12,7 @@ function getPlayerData() {
     weapon: 'Forked Oak Staff',
     armor: 'Novice Robes',
     runes: [],
+    debuffs: ['frozen'],
     spells: ['Push', 'Pull', 'Ignite', 'Heal'],
     gold: 30
   };

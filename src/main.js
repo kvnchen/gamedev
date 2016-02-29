@@ -10,3 +10,6 @@ var Player = require('./player.js'),
 
 console.log(status);
 console.log(reingod.getStatus());
+
+// combat simulation
+reingod.charge(kelvin);
