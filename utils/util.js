@@ -89,6 +89,14 @@ function Util() {
       return 'none';
     }
   }
+
+  this.getNameAndDesc = function(obj) {
+    if (obj && obj.name) {
+      return obj.name + ': ' + obj.description;
+    } else {
+      return 'none';
+    }
+  }
 }
 
 module.exports = new Util();

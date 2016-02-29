@@ -66,8 +66,8 @@ Player.prototype.getStatus = function() {
   status += 'Current health: ' + this.currentHealth + '/' + this.maxHealth + '\n';
   status += 'Known Spells: ' + util.getArrayProp(this.spells) + ' \n';
   status += 'Known Runes: ' + util.getArrayProp(this.runes) + ' \n';
-  status += 'Equipped Weapon: ' + (this.weapon ? (this.weapon.name + ': ' + this.weapon.description) : 'none') + '\n';
-  status += 'Equipped Armor: ' + (this.armor ? (this.armor.name + ': ' + this.armor.description) : 'none') + '\n';
+  status += 'Equipped Weapon: ' + util.getNameAndDesc(this.weapon) + '\n';
+  status += 'Equipped Armor: ' + util.getNameAndDesc(this.armor)+ '\n';
   status += 'Wealth: ' + this.getWealth() + ' gold coins\n';
   status += 'Debuffs: ' + util.getArrayProp(this.debuffs) + '\n';
 
@@ -76,7 +76,7 @@ Player.prototype.getStatus = function() {
 
 Player.prototype.takeDamage = function(dmg) {
   this.currentHealth -= dmg;
-  console.log('You take ' + dmg + ' damage!');
+  console.log('You take ' + dmg + ' damage.');
   if (this.currentHealth <= 0) {
     this.currentHealth = 0;
     console.log('You Died');
@@ -89,6 +89,14 @@ Player.prototype.takeHeal = function(heal) {
     this.currentHealth = this.maxHealth;
   }
 };
+
+Player.prototype.gainDebuff = function(debuff) {
+  if (!_.contains(this.debuffs, debuff)) {
+    this.debuffs.push(debuff);
+  } else {
+    // do something different if player already has debuff
+  }
+}
 
 // Since spells have contextual effects, the result is processed by either
 // by the target enemy, or the spell, or some combination of both.
