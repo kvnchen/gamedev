@@ -18,6 +18,7 @@ function Player(name) {
   this.armor = undefined;
   this.buffs = [];
   this.debuffs = [];
+  this.gold = 0;
 }
 
 Player.prototype.loadProperties = function() {
@@ -54,7 +55,7 @@ Player.prototype.takeHeal = function(heal) {
 
 Player.prototype.getKnownSpells = function() {
   if (this.spells.length === 0) {
-    return 'none.';
+    return 'none';
   } else {
     var spells = '';
     _.each(this.spells, function(spell) {
@@ -66,7 +67,7 @@ Player.prototype.getKnownSpells = function() {
 
 Player.prototype.getKnownRunes = function() {
   if (this.runes.length === 0) {
-    return 'none. Temporarily rip off D2 rune names';
+    return 'none.';
   } else {
     var runes = '';
     _.each(this.runes, function(rune) {
@@ -74,6 +75,16 @@ Player.prototype.getKnownRunes = function() {
     });
     return runes;
   }
+};
+
+Player.prototype.getWealth = function() {
+  return this.gold;
+};
+
+// Since spells have contextual effects, the result is processed by either
+// by the target enemy, or the spell, or some combination of both.
+Player.prototype.castSpell = function(spell, target, area) {
+  
 };
 
 Player.prototype.getStatus = function() {
@@ -86,6 +97,7 @@ Player.prototype.getStatus = function() {
   status += 'Known Runes: ' + this.getKnownRunes() + ' \n';
   status += 'Equipped Weapon: ' + (this.weapon ? (this.weapon.name + ': ' + this.weapon.description) : 'none') + '\n';
   status += 'Equipped Armor: ' + (this.armor ? (this.armor.name + ': ' + this.armor.description) : 'none') + '\n';
+  status += 'Wealth: ' + this.getWealth() + ' gold coins\n';
 
   return status;
 };

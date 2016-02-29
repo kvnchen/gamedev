@@ -5,6 +5,7 @@
 var _ = require('underscore'),
     playerData = require('../data/playerData'),
     weaponData = require('../data/weaponData'),
+    armorData = require('../data/armorData'),
     weapon = require('../src/weapon'),
     armor = require('../src/armor'),
     spell = require('../src/spell');
@@ -22,6 +23,10 @@ function Util() {
   }
 
   function makeArmor(name) {
+    var lookup = stripWhitespace(name);
+    if (_.has(armorData, lookup)) {
+      return new weapon(name, armorData[lookup]);
+    }
     return new armor(name);
   }
 

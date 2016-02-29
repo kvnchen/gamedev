@@ -10,9 +10,9 @@
 var weapons = {
   ForkedOakStaff: {
     name: 'Forked Oak Staff',
-    buyValue: 0,
-    sellValue: 100,
-    description: 'A rustic staff made from a golden-brown oak shaft. The head forks into two branches.'
+    description: 'A rustic staff made from a golden-brown oak shaft. The head forks into two branches.',
+    buyValue: 1000,
+    sellValue: 100
   }
 };
 

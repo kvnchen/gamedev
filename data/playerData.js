@@ -12,7 +12,8 @@ function getPlayerData() {
     weapon: 'Forked Oak Staff',
     armor: 'Novice Robes',
     runes: [],
-    spells: ['Push', 'Pull', 'Ignite', 'Heal']
+    spells: ['Push', 'Pull', 'Ignite', 'Heal'],
+    gold: 30
   };
 
   return playerData;
