@@ -98,6 +98,13 @@ Player.prototype.gainDebuff = function(debuff) {
   }
 }
 
+Player.prototype.removeDebuff = function(debuff) {
+  var index = _.indexOf(this.debuffs, debuff);
+  if (index !== -1) {
+    this.debuffs.splice(index, 1);
+  }
+};
+
 // Since spells have contextual effects, the result is processed by either
 // by the target enemy, or the spell, or some combination of both.
 Player.prototype.castSpell = function(spell, target, area) {

@@ -38,6 +38,7 @@ Reingod.prototype.charge = function(player) {
   if (_.contains(playerDebuffs, 'frozen')) {
     console.log('The frost saps the strength from your legs! Brace yourself...');
     console.log('A devastating blow!');
+    player.removeDebuff('frozen');
     player.takeDamage(20);
   } else {
     console.log('You barely sidestep the beast\'s fury!\n');
