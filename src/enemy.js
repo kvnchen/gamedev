@@ -5,7 +5,8 @@
  *  simply being defined in a data file. 
  */
 
-var _ = require('underscore');
+var _ = require('underscore'),
+    util = require('../utils/util');
 
 function Enemy(name) {
   this.name = name;
@@ -19,24 +20,29 @@ function Enemy(name) {
   this.itemDrops = [];
 }
 
-Enemy.prototype.getArrProps = function(prop) {
-  if (this[prop].length === 0) {
-    return 'none';
-  } else {
-    var str = '';
-    _.each(this[prop], function(p) {
-      str += p +', ';
-    });
-    return str;
+Enemy.prototype.takeDamage = function(dmg) {
+  this.currentHealth -= dmg;
+  console.log(this.name + ' take ' + dmg + ' damage.');
+  if (this.currentHealth <= 0) {
+    this.currentHealth = 0;
+    console.log(this.name + ' is defeated!');
   }
 };
+
+Enemy.prototype.gainDebuff = function(debuff) {
+  if (!_.contains(this.debuffs, debuff)) {
+    this.debuffs.push(debuff);
+  } else {
+    // do something different if creature already has debuff
+  }
+}
 
 Enemy.prototype.getStatus = function() {
   var status = 'Status of ' + this.name + ':\n';
 
   status += 'Current health: ' + this.currentHealth + '/' + this.maxHealth + '\n';
-  status += 'Targetable areas: ' + this.getArrProps('targetAreas') + '\n';
-  status += 'Attacks: ' + this.getArrProps('attacks') + '\n';
+  status += 'Targetable areas: ' + util.getArrayProp(this.targetAreas) + '\n';
+  status += 'Attacks: ' + util.getArrayProp(this.attacks) + '\n';
   status += 'Gold reward: ' + this.goldDrop + '\n';
 
   return status;
