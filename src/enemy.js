@@ -37,6 +37,12 @@ Enemy.prototype.gainDebuff = function(debuff) {
   }
 };
 
+Enemy.prototype.removeDebuff = function(debuff) {
+  if (_.contains(this.debuffs, debuff)) {
+    this.debuffs.pop(debuff);
+  }
+};
+
 Enemy.prototype.resolveSpell = function(spell, area) {
   if (!_.contains(this.targetAreas, area)) {
     console.log('The spell misses wildly.');
@@ -52,6 +58,7 @@ Enemy.prototype.getStatus = function() {
   status += 'Targetable areas: ' + util.getArrayProp(this.targetAreas) + '\n';
   status += 'Attacks: ' + util.getArrayProp(this.attacks) + '\n';
   status += 'Gold reward: ' + this.goldDrop + '\n';
+  status += 'Debuffs: ' + util.getArrayProp(this.debuffs) + '\n';
 
   return status;
 };

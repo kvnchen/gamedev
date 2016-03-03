@@ -5,13 +5,16 @@
 var Player = require('./player.js'),
     boss = require('./bossRein.js'),
     kelvin = new Player('kelvin'),
-    reingod = new boss(),
-    status = kelvin.getStatus();
+    reingod = new boss();
 
-console.log(status);
+console.log('\n' + kelvin.getStatus());
 console.log(reingod.getStatus());
 
 // combat simulation
 kelvin.castSpell('Push',reingod,'wound');
 reingod.frostBreath(kelvin);
+kelvin.castSpell('Ignite',reingod,'wound');
+kelvin.castSpell('Pull',reingod,'wound');
+console.log('\n');
+console.log(reingod.getStatus());
 reingod.charge(kelvin);

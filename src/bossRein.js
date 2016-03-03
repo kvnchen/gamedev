@@ -51,6 +51,14 @@ Reingod.prototype.advanceWoundState = function(spell) {
         } else {
           console.log('Whatever you tried to do, it had no effect.');
         }
+      case 'embedded':
+        if (spell.name === 'Pull') {
+          console.log('Metal is freed from flesh, with a terrible squelch! Blood flow intensifies.')
+          this.woundState = 'raw';
+          this.removeDebuff('bleeding');
+          this.gainDebuff('bleedingHeavy');
+          this.takeDamage(20);
+        }
     }
   }
 };
