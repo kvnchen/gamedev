@@ -12,5 +12,6 @@ console.log(status);
 console.log(reingod.getStatus());
 
 // combat simulation
+kelvin.castSpell('Push',reingod,'wound');
 reingod.frostBreath(kelvin);
 reingod.charge(kelvin);

@@ -107,8 +107,14 @@ Player.prototype.removeDebuff = function(debuff) {
 
 // Since spells have contextual effects, the result is processed by either
 // by the target enemy, or the spell, or some combination of both.
-Player.prototype.castSpell = function(spell, target, area) {
-  
+Player.prototype.castSpell = function(spellName, target, area) {
+  var spell = _.findWhere(this.spells, {name: spellName});
+  if (!spell) {
+    console.log('You attempt to invoke an unknown magic. Nothing happens.');
+  } else {
+    console.log('You cast ' + spell.name + ' on ' + target.name + '\'s ' + area);
+    target.resolveSpell(spell, area);
+  }
 };
 
 module.exports = Player;

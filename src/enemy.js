@@ -35,7 +35,15 @@ Enemy.prototype.gainDebuff = function(debuff) {
   } else {
     // do something different if creature already has debuff
   }
-}
+};
+
+Enemy.prototype.resolveSpell = function(spell, area) {
+  if (!_.contains(this.targetAreas, area)) {
+    console.log('The spell misses wildly.');
+  } else {
+    // handle spell based on area targeted
+  }
+};
 
 Enemy.prototype.getStatus = function() {
   var status = 'Status of ' + this.name + ':\n';
