@@ -58,6 +58,17 @@ Reingod.prototype.advanceWoundState = function(spell) {
           this.removeDebuff('bleeding');
           this.gainDebuff('bleedingHeavy');
           this.takeDamage(20);
+        } else if (spell.name === 'Push') {
+          this.takeDamage(40);
+        } else if (spell.name === 'Heal') {
+          console.log('The axe is preventing the wound from closing.');
+        } else {
+          console.log('Whatever you tried to do, it had no effect.');
+        }
+
+      case 'embedded hot':
+        if (spell.name === 'Push') {
+          this.takeDamage(200);
         }
     }
   }
