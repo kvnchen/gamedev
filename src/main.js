@@ -7,14 +7,16 @@ var Player = require('./player.js'),
     kelvin = new Player('kelvin'),
     reingod = new boss();
 
-console.log('\n' + kelvin.getStatus());
-console.log(reingod.getStatus());
+var output = '';
+
+output += kelvin.getStatus() + '\n';
+output += reingod.getStatus() + '\n';
 
 // combat simulation
-kelvin.castSpell('Push',reingod,'wound');
-reingod.frostBreath(kelvin);
-kelvin.castSpell('Ignite',reingod,'wound');
-kelvin.castSpell('Pull',reingod,'wound');
-console.log('\n');
-console.log(reingod.getStatus());
-reingod.charge(kelvin);
+output += kelvin.castSpell('Push',reingod,'wound') + '\n';
+output += kelvin.castSpell('Ignite',reingod,'wound') + '\n';
+output += kelvin.castSpell('Pull',reingod,'wound');
+console.log(output);
+/*reingod.frostBreath(kelvin);
+output += (reingod.getStatus());
+reingod.charge(kelvin);*/

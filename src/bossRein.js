@@ -24,53 +24,66 @@ Reingod.prototype = Object.create(enemy.prototype);
 Reingod.prototype.constructor = Reingod;
 
 Reingod.prototype.resolveSpell = function (spell, area) {
+  var outputStr = '';
   if (!_.contains(this.targetAreas, area)) {
-    console.log('The spell misses wildly. Reingod stares blankly.');
+    outputStr += 'The spell misses wildly. Reingod stares blankly.\n';
   } else {
     // handle spell based on area targeted
     if (area === 'wound') {
-      this.advanceWoundState(spell);
+      outputStr += this.advanceWoundState(spell);
     }
   }
+  return outputStr;
 };
 
 Reingod.prototype.advanceWoundState = function(spell) {
+  var outputStr = '';
   if (_.contains(this.validSpellTargets.wound, spell.name)) {
     // Wound states: frozen, embedded, embedded hot, embedded deeply, raw, healed
-    switch(this.woundState) {
-      case 'frozen':
-        if (spell.name === 'Push' || spell.name === 'Pull') {
-          console.log('The ice and frozen blood lock the axe in place. It refuses to budge.');
-        } else if (spell.name === 'Heal') {
-          console.log('The axe is preventing the wound from closing.');
-        } else if (spell.name === 'Ignite') {
-          console.log('Blazing heat melts the ice away! Blood begins to flow...');
-          this.gainDebuff('bleeding');
-          this.woundState = 'embedded';
-          this.takeDamage(10);
-        } else {
-          console.log('Whatever you tried to do, it had no effect.');
-        }
-      case 'embedded':
-        if (spell.name === 'Pull') {
-          console.log('Metal is freed from flesh, with a terrible squelch! Blood flow intensifies.')
-          this.woundState = 'raw';
-          this.removeDebuff('bleeding');
-          this.gainDebuff('bleedingHeavy');
-          this.takeDamage(20);
-        } else if (spell.name === 'Push') {
-          this.takeDamage(40);
-        } else if (spell.name === 'Heal') {
-          console.log('The axe is preventing the wound from closing.');
-        } else {
-          console.log('Whatever you tried to do, it had no effect.');
-        }
-
-      case 'embedded hot':
-        if (spell.name === 'Push') {
-          this.takeDamage(200);
-        }
+    if (this.woundState === 'frozen') {
+      if (spell.name === 'Push' || spell.name === 'Pull') {
+        outputStr += 'The ice and frozen blood lock the axe in place. It refuses to budge.\n';
+      } else if (spell.name === 'Heal') {
+        outputStr += 'The axe is preventing the wound from closing.\n';
+      } else if (spell.name === 'Ignite') {
+        outputStr += 'Blazing heat melts the ice away! Blood begins to flow...\n';
+        this.gainDebuff('bleeding');
+        this.woundState = 'embedded';
+        this.takeDamage(10);
+      } else {
+        outputStr += 'Whatever you tried to do, it had no effect.\n';
+      }
+    } else if (this.woundState === 'embedded') {
+      if (spell.name === 'Pull') {
+        outputStr += 'Metal is freed from flesh, with a terrible squelch!\n';
+        this.woundState = 'raw';
+        this.takeDamage(20);
+      } else if (spell.name === 'Push') {
+        outputStr += 'The blade is thrust deeper! The Reingod howls in pain!\nBlood flow intensifies.\n';
+        this.removeDebuff('bleeding');
+        this.gainDebuff('bleedingHeavy');
+        this.woundState = 'embedded deeply';
+        this.takeDamage(40);
+      } else if (spell.name === 'Heal') {
+        outputStr += 'The axe is still preventing the wound from closing.\n';
+      } else if (spell.name === 'Ignite') {
+        outputStr += 'The axe head glows with heat. The bleeding ceases as flesh is singed.\n';
+        this.removeDebuff('bleeding');
+        this.woundState = 'embedded hot';
+        this.takeDamage(30);
+      } else {
+        outputStr += 'Whatever you tried to do, it had no effect.\n';
+      }
+    } else if (this.woundState === 'embedded hot') {
+      if (spell.name === 'Push') {
+        outputStr += 'The burning blade strikes deep, and the Reingod collapses!\n';
+        this.takeDamage(200);
+      }
     }
+    return outputStr;
+  } else {
+    outputStr = 'That spell had no effect.\n';
+    return outputStr;
   }
 };
 
