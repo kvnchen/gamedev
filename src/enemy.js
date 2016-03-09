@@ -21,34 +21,45 @@ function Enemy(name) {
 }
 
 Enemy.prototype.takeDamage = function(dmg) {
+  var outputStr = '';
   this.currentHealth -= dmg;
-  console.log(this.name + ' take ' + dmg + ' damage.');
+  outputStr = this.name + ' takes ' + dmg + ' damage.\n';
   if (this.currentHealth <= 0) {
     this.currentHealth = 0;
-    console.log(this.name + ' is defeated!');
+    outputStr += this.name + ' is defeated!\n';
   }
+  return outputStr;
 };
 
 Enemy.prototype.gainDebuff = function(debuff) {
+  var outputStr = '';
   if (!_.contains(this.debuffs, debuff)) {
     this.debuffs.push(debuff);
+    outputStr = this.name + ' gains debuff ' + debuff + '\n';
   } else {
     // do something different if creature already has debuff
   }
+  return outputStr;
 };
 
 Enemy.prototype.removeDebuff = function(debuff) {
-  if (_.contains(this.debuffs, debuff)) {
-    this.debuffs.pop(debuff);
+  var index = _.indexOf(this.debuffs, debuff),
+      outputStr = '';
+  if (index !== -1) {
+    this.debuffs.splice(index, 1);
+    outputStr = this.name + ' loses debuff ' + debuff + '\n';
   }
+  return outputStr;
 };
 
 Enemy.prototype.resolveSpell = function(spell, area) {
+  var outputStr = '';
   if (!_.contains(this.targetAreas, area)) {
-    console.log('The spell misses wildly.');
+    outputStr = 'The spell misses wildly.\n';
   } else {
     // handle spell based on area targeted
   }
+  return outputStr;
 };
 
 Enemy.prototype.getStatus = function() {

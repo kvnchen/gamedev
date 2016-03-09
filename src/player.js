@@ -75,12 +75,15 @@ Player.prototype.getStatus = function() {
 };
 
 Player.prototype.takeDamage = function(dmg) {
+  var outputStr = '';
   this.currentHealth -= dmg;
-  console.log('You take ' + dmg + ' damage.');
+  outputStr = 'You take ' + dmg + ' damage.\n';
   if (this.currentHealth <= 0) {
     this.currentHealth = 0;
-    console.log('You Died');
+    outputStr += 'You Died\n';
   }
+
+  return outputStr;
 };
 
 Player.prototype.takeHeal = function(heal) {
@@ -91,18 +94,24 @@ Player.prototype.takeHeal = function(heal) {
 };
 
 Player.prototype.gainDebuff = function(debuff) {
+  var outputStr = '';
   if (!_.contains(this.debuffs, debuff)) {
     this.debuffs.push(debuff);
+    outputStr = this.name + ' gains debuff ' + debuff + '\n';
   } else {
-    // do something different if player already has debuff
+    // do something different if you already has debuff
   }
+  return outputStr;
 }
 
 Player.prototype.removeDebuff = function(debuff) {
-  var index = _.indexOf(this.debuffs, debuff);
+  var index = _.indexOf(this.debuffs, debuff),
+      outputStr = '';
   if (index !== -1) {
     this.debuffs.splice(index, 1);
+    outputStr = this.name + ' loses debuff ' + debuff + '\n';
   }
+  return outputStr;
 };
 
 // Since spells have contextual effects, the result is processed by either

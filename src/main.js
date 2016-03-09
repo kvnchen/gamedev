@@ -14,9 +14,11 @@ output += reingod.getStatus() + '\n';
 
 // combat simulation
 output += kelvin.castSpell('Push',reingod,'wound') + '\n';
+output += reingod.frostBreath(kelvin) + '\n';
 output += kelvin.castSpell('Ignite',reingod,'wound') + '\n';
-output += kelvin.castSpell('Pull',reingod,'wound');
+output += kelvin.castSpell('Pull',reingod,'wound') + '\n';
+output += reingod.charge(kelvin) + '\n';
 console.log(output);
-/*reingod.frostBreath(kelvin);
+/*
 output += (reingod.getStatus());
-reingod.charge(kelvin);*/
+*/
