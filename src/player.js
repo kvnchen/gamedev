@@ -149,24 +149,7 @@ Player.prototype.resolveSpell = function (spell) {
     outputStr += self.takeDamage(spell.damage);
   }
 
-  if (spell.buffs.length > 0) {
-    _.each(spell.buffs, function(buff) {
-      self.gainBuff(buff);
-    });
-  }
-
-  if (spell.debuffs.length > 0) {
-    _.each(spell.debuffs, function(debuff) {
-      self.gainDebuff(debuff);
-    });
-  }
-
-  _.each(spell.removesDebuffs, function(debuff){
-    if (_.contains(self.debuffs, debuff)) {
-      outputStr += self.removeDebuff(debuff);
-    }
-  });
-
+  outputStr += util.handleBuffsAndDebuffs(self, spell);
   
   return outputStr;
 };

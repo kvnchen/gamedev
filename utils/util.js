@@ -112,7 +112,31 @@ function Util() {
       output += '\n' + self.getNameAndDesc(item);
     });
     return output;
-  }
+  };
+
+  this.handleBuffsAndDebuffs = function(unit, spell) {
+    var output = '';
+
+    if (spell.buffs.length > 0) {
+      _.each(spell.buffs, function(buff) {
+        output += unit.gainBuff(buff);
+      });
+    }
+
+    if (spell.debuffs.length > 0) {
+      _.each(spell.debuffs, function(debuff) {
+        output += unit.gainDebuff(debuff);
+      });
+    }
+
+    _.each(spell.removesDebuffs, function(debuff){
+      if (_.contains(unit.debuffs, debuff)) {
+        output += unit.removeDebuff(debuff);
+      }
+    });
+
+    return output;
+  };
 }
 
 module.exports = new Util();
