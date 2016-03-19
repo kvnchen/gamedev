@@ -108,7 +108,6 @@ Player.prototype.gainDebuff = function(debuff) {
 };
 
 Player.prototype.removeDebuff = function(debuff) {
-  console.log('removing debuff',debuff);
   var index = _.indexOf(this.debuffs, debuff),
       outputStr = '';
   if (index !== -1) {

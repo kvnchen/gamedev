@@ -20,7 +20,7 @@ var output = kelvin.getStatus() + '\n'
            //+ kelvin.castSpell('Ignite',reingod,'wound') + '\n'
 
            // test debuff removal via self cast
-           + kelvin.castSpell('Ignite',kelvin);
+           + kelvin.castSpell('Ignite',kelvin)
 
            // Test pacifist branch
            //+ kelvin.castSpell('Pull',reingod,'wound') + '\n'
@@ -34,7 +34,7 @@ var output = kelvin.getStatus() + '\n'
            //+ kelvin.castSpell('Push',reingod,'wound') + '\n';
 
 
-           //+ reingod.charge(kelvin) + '\n';
+           + reingod.charge(kelvin) + '\n';
 console.log(output);
 /*
 output += (reingod.getStatus());
