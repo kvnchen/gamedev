@@ -39,7 +39,8 @@ Reingod.prototype.resolveSpell = function (spell, area) {
 Reingod.prototype.advanceWoundState = function(spell) {
   var outputStr = '';
   if (_.contains(this.validSpellTargets.wound, spell.name)) {
-    // Wound states: frozen, embedded, embedded hot, embedded deeply, raw, healed
+
+    // initial state
     if (this.woundState === 'frozen') {
       if (spell.name === 'Push' || spell.name === 'Pull') {
         outputStr = 'The ice and frozen blood lock the axe in place. It refuses to budge.\n';
@@ -53,7 +54,10 @@ Reingod.prototype.advanceWoundState = function(spell) {
       } else {
         outputStr = 'Whatever you tried to do, it had no effect.\n';
       }
-    } else if (this.woundState === 'embedded') {
+    } 
+
+    // embedded
+    else if (this.woundState === 'embedded') {
       if (spell.name === 'Pull') {
         this.woundState = 'raw';
         outputStr = 'Metal is freed from flesh, with a terrible squelch!\n'
@@ -74,11 +78,34 @@ Reingod.prototype.advanceWoundState = function(spell) {
       } else {
         outputStr = 'Whatever you tried to do, it had no effect.\n';
       }
-    } else if (this.woundState === 'embedded hot') {
+    }
+
+    // raw
+    else if (this.woundState === 'raw') {
+      // to do
+    }
+    
+    // embedded hot
+    else if (this.woundState === 'embedded hot') {
       if (spell.name === 'Push') {
         outputStr = 'The burning blade strikes deep, and the Reingod collapses!\n'
                   + this.takeDamage(200);
+      } else if (spell.name === 'Pull') {
+        this.woundState = 'raw';
+        outputStr = 'Metal is freed from flesh, with a terrible squelch!\n'
+                  + this.takeDamage(20);
+      } else if (spell.name === 'Heal') {
+        outputStr = 'Strangely enough, a burning-hot axehead is not condusive to healing.';
+      } else if (spell.name === 'Ignite') {
+        outputStr = 'The axe cannot get any hotter from these flames.';
+      } else {
+        outputStr = 'Whatever you tried to do, it had no effect.\n';
       }
+    }
+
+    // embedded deeply
+    else if (this.woundState === 'embedded deeply') {
+      // no further state changes from here
     }
   } else {
     outputStr = 'That spell had no effect.\n';
@@ -87,19 +114,17 @@ Reingod.prototype.advanceWoundState = function(spell) {
 };
 
 Reingod.prototype.frostBreath = function(player) {
-  var outputStr = '';
-  outputStr = 'The Reingod breathes frost!!\nThe ground, and your legs, freeze over.\n'
-            + player.takeDamage(5)
-            + player.gainDebuff('frozen');
+  var outputStr = 'The Reingod breathes frost!!\nThe ground, and your legs, freeze over.\n'
+                + player.takeDamage(5)
+                + player.gainDebuff('frozen');
 
   return outputStr;
 };
 
 Reingod.prototype.charge = function(player) {
   var playerDebuffs = player.getDebuffs(),
-      outputStr = '';
+      outputStr = 'The Reingod charges!!\n';
 
-  outputStr = 'The Reingod charges!!\n';
   if (_.contains(playerDebuffs, 'frozen')) {
     outputStr += 'The frost saps the strength from your legs! Brace yourself...\n'
               + 'A devastating blow!\n'

@@ -61,23 +61,21 @@ Player.prototype.getWeapon = function() {
 Player.prototype.getStatus = function() {
   this.loadProperties();
 
-  var status = 'Status of ' + this.name + ':\n';
-
-  status += 'Current health: ' + this.currentHealth + '/' + this.maxHealth + '\n';
-  status += 'Known Spells: ' + util.getArrayProp(this.spells) + ' \n';
-  status += 'Known Runes: ' + util.getArrayProp(this.runes) + ' \n';
-  status += 'Equipped Weapon: ' + util.getNameAndDesc(this.weapon) + '\n';
-  status += 'Equipped Armor: ' + util.getNameAndDesc(this.armor)+ '\n';
-  status += 'Wealth: ' + this.getWealth() + ' gold coins\n';
-  status += 'Debuffs: ' + util.getArrayProp(this.debuffs) + '\n';
+  var status = 'Status of ' + this.name + ':\n'
+             + 'Current health: ' + this.currentHealth + '/' + this.maxHealth + '\n'
+             + 'Known Spells: ' + util.getArrayProp(this.spells) + ' \n'
+             + 'Known Runes: ' + util.getArrayProp(this.runes) + ' \n'
+             + 'Equipped Weapon: ' + util.getNameAndDesc(this.weapon) + '\n'
+             + 'Equipped Armor: ' + util.getNameAndDesc(this.armor)+ '\n'
+             + 'Wealth: ' + this.getWealth() + ' gold coins\n'
+             + 'Debuffs: ' + util.getArrayProp(this.debuffs) + '\n';
 
   return status;
 };
 
 Player.prototype.takeDamage = function(dmg) {
-  var outputStr = '';
   this.currentHealth -= dmg;
-  outputStr = 'You take ' + dmg + ' damage.\n';
+  var outputStr = 'You take ' + dmg + ' damage.\n';
   if (this.currentHealth <= 0) {
     this.currentHealth = 0;
     outputStr += 'You Died\n';
@@ -122,8 +120,8 @@ Player.prototype.castSpell = function(spellName, target, area) {
   if (!spell) {
     outputStr += 'You attempt to invoke an unknown magic. Nothing happens.\n';
   } else {
-    outputStr += 'You cast ' + spell.name + ' on ' + target.name + '\'s ' + area + '\n';
-    outputStr += target.resolveSpell(spell, area);
+    outputStr += 'You cast ' + spell.name + ' on ' + target.name + '\'s ' + area + '\n'
+              + target.resolveSpell(spell, area);
   }
   return outputStr;
 };
