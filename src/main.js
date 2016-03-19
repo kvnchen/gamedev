@@ -11,10 +11,16 @@ var Player = require('./player.js'),
 var output = kelvin.getStatus() + '\n'
            + reingod.getStatus() + '\n'
 
+          // healing
+          + kelvin.castSpell('Heal', kelvin) + '\n'
+
           // combat simulation
            + kelvin.castSpell('Push',reingod,'wound') + '\n'
            + reingod.frostBreath(kelvin) + '\n'
-           + kelvin.castSpell('Ignite',reingod,'wound') + '\n'
+           //+ kelvin.castSpell('Ignite',reingod,'wound') + '\n'
+
+           // test debuff removal via self cast
+           + kelvin.castSpell('Ignite',kelvin);
 
            // Test pacifist branch
            //+ kelvin.castSpell('Pull',reingod,'wound') + '\n'
@@ -25,7 +31,7 @@ var output = kelvin.getStatus() + '\n'
            //+ kelvin.castSpell('Push',reingod,'wound') + '\n';
 
            // test slow bleed branch
-           + kelvin.castSpell('Push',reingod,'wound') + '\n';
+           //+ kelvin.castSpell('Push',reingod,'wound') + '\n';
 
 
            //+ reingod.charge(kelvin) + '\n';

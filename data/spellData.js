@@ -14,7 +14,9 @@ var spell = {
     damage: 0,
     heal: 10,
     buffs: [],
-    debuffs: []
+    debuffs: [],
+    removesBuffs: [],
+    removesDebuffs: []
   },
   Push: {
     name: 'Push',
@@ -22,7 +24,9 @@ var spell = {
     damage: 0,
     heal: 0,
     buffs: [],
-    debuffs: []
+    debuffs: [],
+    removesBuffs: [],
+    removesDebuffs: []
   },
   Pull: {
     name: 'Pull',
@@ -30,7 +34,9 @@ var spell = {
     damage: 0,
     heal: 0,
     buffs: [],
-    debuffs: []
+    debuffs: [],
+    removesBuffs: [],
+    removesDebuffs: []
   },
   Ignite: {
     name: 'Ignite',
@@ -38,7 +44,9 @@ var spell = {
     damage: 10,
     heal: 0,
     buffs: [],
-    debuffs: []
+    debuffs: [],
+    removesBuffs: [],
+    removesDebuffs: ['frozen']
   },
 };
 

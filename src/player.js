@@ -89,6 +89,11 @@ Player.prototype.takeHeal = function(heal) {
   if (this.currentHealth >= this.maxHealth) {
     this.currentHealth = this.maxHealth;
   }
+  return 'You gain ' + heal + ' life. (' + this.currentHealth + '/' + this.maxHealth + ')\n';
+};
+
+Player.prototype.gainBuff = function(buff) {
+  // implement me!
 };
 
 Player.prototype.gainDebuff = function(debuff) {
@@ -97,12 +102,13 @@ Player.prototype.gainDebuff = function(debuff) {
     this.debuffs.push(debuff);
     outputStr = this.name + ' gains debuff ' + debuff + '\n';
   } else {
-    // do something different if you already has debuff
+    // do something different if you already have debuff
   }
   return outputStr;
-}
+};
 
 Player.prototype.removeDebuff = function(debuff) {
+  console.log('removing debuff',debuff);
   var index = _.indexOf(this.debuffs, debuff),
       outputStr = '';
   if (index !== -1) {
@@ -118,21 +124,50 @@ Player.prototype.castSpell = function(spellName, target, area) {
   var spell = _.findWhere(this.spells, {name: spellName}),
       outputStr = '';
   if (!spell) {
-    outputStr += 'You attempt to invoke an unknown magic. Nothing happens.\n';
+    outputStr = 'You attempt to invoke an unknown magic. Nothing happens.\n';
   } else {
-    outputStr += 'You cast ' + spell.name + ' on ' + target.name + '\'s ' + area + '\n'
-              + target.resolveSpell(spell, area);
+    if (area) {
+      outputStr = 'You cast ' + spell.name + ' on ' + target.name + '\'s ' + area + '.\n'
+                + target.resolveSpell(spell, area);
+    } else {
+      outputStr = 'You cast ' + spell.name + ' on ' + target.name + '.\n'
+                + target.resolveSpell(spell);
+    }
   }
   return outputStr;
 };
 
 // I don't think ill have targetable areas on the player for now
 Player.prototype.resolveSpell = function (spell) {
-  var outputStr = '';
+  var outputStr = '',
+      self = this;
 
-  if (spell.name === 'Heal') {
-    
+  if (spell.heal > 0) {
+    outputStr += self.takeHeal(spell.heal);
   }
+
+  if (spell.damage > 0) {
+    outputStr += self.takeDamage(spell.damage);
+  }
+
+  if (spell.buffs.length > 0) {
+    _.each(spell.buffs, function(buff) {
+      self.gainBuff(buff);
+    });
+  }
+
+  if (spell.debuffs.length > 0) {
+    _.each(spell.debuffs, function(debuff) {
+      self.gainDebuff(debuff);
+    });
+  }
+
+  _.each(spell.removesDebuffs, function(debuff){
+    if (_.contains(self.debuffs, debuff)) {
+      outputStr += self.removeDebuff(debuff);
+    }
+  });
+
   
   return outputStr;
 };

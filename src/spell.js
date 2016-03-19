@@ -12,12 +12,16 @@
     this.heal = options.heal;
     this.buffs = options.buffs;
     this.debuffs = options.debuffs;
+    this.removesBuffs = options.removesBuffs;
+    this.removesDebuffs = options.removesDebuffs;
   } else {
     this.description = '';
     this.damage = 0;
     this.heal = 0;
     this.buffs = [];
     this.debuffs = [];
+    this.removesBuffs = [];
+    this.removesDebuffs = [];
   }
 
   this.base = undefined;
