@@ -15,8 +15,20 @@ var output = kelvin.getStatus() + '\n'
            + kelvin.castSpell('Push',reingod,'wound') + '\n'
            + reingod.frostBreath(kelvin) + '\n'
            + kelvin.castSpell('Ignite',reingod,'wound') + '\n'
-           + kelvin.castSpell('Pull',reingod,'wound') + '\n'
-           + reingod.charge(kelvin) + '\n';
+
+           // Test pacifist branch
+           //+ kelvin.castSpell('Pull',reingod,'wound') + '\n'
+           //+ kelvin.castSpell('Heal',reingod,'wound') + '\n';
+
+           // test instant kill branch
+           //+ kelvin.castSpell('Ignite',reingod,'wound') + '\n'
+           //+ kelvin.castSpell('Push',reingod,'wound') + '\n';
+
+           // test slow bleed branch
+           + kelvin.castSpell('Push',reingod,'wound') + '\n';
+
+
+           //+ reingod.charge(kelvin) + '\n';
 console.log(output);
 /*
 output += (reingod.getStatus());

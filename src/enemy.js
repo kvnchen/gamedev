@@ -23,7 +23,7 @@ function Enemy(name) {
 Enemy.prototype.takeDamage = function(dmg) {
   var outputStr = '';
   this.currentHealth -= dmg;
-  outputStr = this.name + ' takes ' + dmg + ' damage.\n';
+  outputStr = this.name + ' takes ' + dmg + ' damage. (' + this.currentHealth + '/' + this.maxHealth + ')\n';
   if (this.currentHealth <= 0) {
     this.currentHealth = 0;
     outputStr += this.name + ' is defeated!\n';

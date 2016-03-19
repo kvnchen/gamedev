@@ -63,7 +63,7 @@ Player.prototype.getStatus = function() {
 
   var status = 'Status of ' + this.name + ':\n'
              + 'Current health: ' + this.currentHealth + '/' + this.maxHealth + '\n'
-             + 'Known Spells: ' + util.getArrayProp(this.spells) + ' \n'
+             + 'Known Spells: ' + util.getAllNamesAndDesc(this.spells) + ' \n'
              + 'Known Runes: ' + util.getArrayProp(this.runes) + ' \n'
              + 'Equipped Weapon: ' + util.getNameAndDesc(this.weapon) + '\n'
              + 'Equipped Armor: ' + util.getNameAndDesc(this.armor)+ '\n'
@@ -75,7 +75,7 @@ Player.prototype.getStatus = function() {
 
 Player.prototype.takeDamage = function(dmg) {
   this.currentHealth -= dmg;
-  var outputStr = 'You take ' + dmg + ' damage.\n';
+  var outputStr = 'You take ' + dmg + ' damage. (' + this.currentHealth + '/' + this.maxHealth + ')\n';
   if (this.currentHealth <= 0) {
     this.currentHealth = 0;
     outputStr += 'You Died\n';
@@ -123,6 +123,17 @@ Player.prototype.castSpell = function(spellName, target, area) {
     outputStr += 'You cast ' + spell.name + ' on ' + target.name + '\'s ' + area + '\n'
               + target.resolveSpell(spell, area);
   }
+  return outputStr;
+};
+
+// I don't think ill have targetable areas on the player for now
+Player.prototype.resolveSpell = function (spell) {
+  var outputStr = '';
+
+  if (spell.name === 'Heal') {
+    
+  }
+  
   return outputStr;
 };
 

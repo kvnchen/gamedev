@@ -6,11 +6,14 @@ var _ = require('underscore'),
     playerData = require('../data/playerData'),
     weaponData = require('../data/weaponData'),
     armorData = require('../data/armorData'),
+    spellData = require('../data/spellData'),
     weapon = require('../src/weapon'),
     armor = require('../src/armor'),
     spell = require('../src/spell');
 
 function Util() {
+  var self = this;
+
   /*
    *  Functions handling data creation below
    */
@@ -31,6 +34,10 @@ function Util() {
   }
 
   function makeSpell(name) {
+    var lookup = stripWhitespace(name);
+    if (_.has(spellData, lookup)) {
+      return new spell(name, spellData[lookup]);
+    }
     return new spell(name);
   }
 
@@ -88,7 +95,7 @@ function Util() {
     } else { 
       return 'none';
     }
-  }
+  };
 
   this.getNameAndDesc = function(obj) {
     if (obj && obj.name) {
@@ -96,6 +103,15 @@ function Util() {
     } else {
       return 'none';
     }
+  };
+
+  this.getAllNamesAndDesc = function(arr) {
+    var output = '';
+
+    _.each(arr, function(item) {
+      output += '\n' + self.getNameAndDesc(item);
+    });
+    return output;
   }
 }
 

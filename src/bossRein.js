@@ -82,7 +82,13 @@ Reingod.prototype.advanceWoundState = function(spell) {
 
     // raw
     else if (this.woundState === 'raw') {
-      // to do
+      if (spell.name === 'Heal') {
+        outputStr = 'The wound closes.\nThe Reingod no longer wishes to kill you!\n';
+      } else if (spell.name === 'Ignite') {
+        outputStr = 'You burn the raw wound.\n';
+      } else {
+        outputStr = 'Whatever you tried to do, it had no effect.\n';
+      } 
     }
     
     // embedded hot
@@ -101,11 +107,6 @@ Reingod.prototype.advanceWoundState = function(spell) {
       } else {
         outputStr = 'Whatever you tried to do, it had no effect.\n';
       }
-    }
-
-    // embedded deeply
-    else if (this.woundState === 'embedded deeply') {
-      // no further state changes from here
     }
   } else {
     outputStr = 'That spell had no effect.\n';
