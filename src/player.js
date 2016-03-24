@@ -4,6 +4,7 @@
 
 var _ = require('underscore'),
     util = require('../utils/util'),
+    getPlayerInput = require('./getPlayerInput'),
     weapon = require('./weapon'),
     armor = require('./armor');
 
@@ -137,7 +138,7 @@ Player.prototype.castSpell = function(spellName, target, area) {
 };
 
 // I don't think ill have targetable areas on the player for now
-Player.prototype.resolveSpell = function (spell) {
+Player.prototype.resolveSpell = function(spell) {
   var outputStr = '',
       self = this;
 
@@ -152,6 +153,11 @@ Player.prototype.resolveSpell = function (spell) {
   outputStr += util.handleBuffsAndDebuffs(self, spell);
   
   return outputStr;
+};
+
+// Implement me!
+Player.prototype.getAction = function(enemy) {
+  return getPlayerInput(this, enemy);
 };
 
 module.exports = Player;

@@ -127,7 +127,7 @@ Reingod.prototype.charge = function(player) {
       outputStr = 'The Reingod charges!!\n';
 
   if (_.contains(playerDebuffs, 'frozen')) {
-    outputStr += 'The frost saps the strength from your legs! Brace yourself...\n'
+    outputStr += 'The frost encases your legs, preventing movement! Brace yourself...\n'
               + 'A devastating blow!\n'
               + player.removeDebuff('frozen')
               + player.takeDamage(20);
@@ -136,6 +136,17 @@ Reingod.prototype.charge = function(player) {
   }
 
   return outputStr;
+};
+
+/*  Implement me!
+ *  simple test - frost breath if player isnt frozen, charge if they are.
+ */
+Reingod.prototype.getAction = function(player) {
+  if (_.contains(player.getDebuffs(), 'frozen')) {
+    return this.charge(player);
+  } else {
+    return this.frostBreath(player);
+  }
 };
 
 module.exports = Reingod;
