@@ -38,4 +38,57 @@ var output = kelvin.getStatus() + '\n'
 console.log(output);
 
 // gameController test
-gameController(kelvin, reingod);
+//gameController(kelvin, reingod);
+
+
+// basic stdin reading
+
+/*process.stdin.setEncoding('utf8');
+
+process.stdin.on('readable', () => {
+  var chunk = process.stdin.read();
+  if (chunk !== null) {
+    process.stdout.write(`data: ${chunk}`);
+  }
+});
+
+process.stdin.on('end', () => {
+  process.stdout.write('end');
+});*/
+
+var readline = require('readline');
+var rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+  terminal: false
+});
+
+var name = '';
+var gameLine = 'What is your name?';
+console.log(gameLine);
+
+
+rl.on('line', function(line){
+  // Get player name
+
+  if (gameLine === 'What is your name?' || gameLine === 'Your full name, please') {
+    if (line === '') {
+      gameLine = 'Your full name, please';
+      console.log(gameLine);
+    } else {
+      name = line;
+      console.log('Hello, ' + name);
+      gameLine = 'Issue your commands.';
+      console.log(gameLine);
+    }
+  } 
+
+  else if (gameLine = 'Issue your command.') {
+    if (line === 'quit') {
+      console.log('Thank you for playing this demo!');
+      rl.close();
+    } else {
+      console.log('Kelvin: ' + line);
+    }
+  }
+});
