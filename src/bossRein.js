@@ -88,7 +88,8 @@ Reingod.prototype.advanceWoundState = function(spell) {
         this.isPacified = true;
         outputStr += 'The wound closes.\nThe Reingod no longer wishes to kill you!\n';
       } else if (spell.name === 'Ignite') {
-        outputStr = 'You burn the raw wound.\n';
+        outputStr = 'You burn the raw wound.\n'
+                  + this.takeDamage(spell.damage);
       } else {
         outputStr = 'Whatever you tried to do, it had no effect.\n';
       } 
@@ -111,6 +112,11 @@ Reingod.prototype.advanceWoundState = function(spell) {
         outputStr = 'Whatever you tried to do, it had no effect.\n';
       }
     }
+
+    // embedded deeply
+    else if (this.woundState === 'embedded deeply') {
+      // implement me!
+    }
   } else {
     outputStr = 'That spell had no effect.\n';
   }
@@ -119,8 +125,8 @@ Reingod.prototype.advanceWoundState = function(spell) {
 
 Reingod.prototype.frostBreath = function(player) {
   var outputStr = 'The Reingod breathes frost!!\nThe ground, and your legs, freeze over.\n'
-                + player.takeDamage(5)
-                + player.gainDebuff('frozen');
+                + player.gainDebuff('frozen')
+                + player.takeDamage(5);
 
   return outputStr;
 };
