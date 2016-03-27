@@ -5,7 +5,7 @@
 var _ = require('underscore');
 var readline = require('readline');
 
-function getPlayerInput(player, enemy) {
+function getPlayerInput(line, player, enemy) {
   // temp no-internet workaround. burn them all muahahahaahaaaa
   /*if (player.currentHealth <= 10) {
     return player.castSpell('Heal',player);
@@ -19,12 +19,6 @@ function getPlayerInput(player, enemy) {
   }
   return player.castSpell('Ignite',enemy,'wound');*/
 
-  var rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
-    terminal: false
-  });
-
   function getTarget(str) {
     if (str === player.name) {
       return player;
@@ -35,29 +29,22 @@ function getPlayerInput(player, enemy) {
     }
   }
 
-  rl.on('line', function(line){
-    if (line === 'quit') {
-      console.log('Thank you for playing this demo!');
-    } else {
-      // expect format 'spell target <optional area>'
-      var inputs = line.split(' ');
-      if (inputs.length < 2) {
-        return player.name + 'panicked and failed to act!';
-      }
+  // expect format 'spell target <optional area>'
+  var inputs = line.split(' ');
+  if (inputs.length < 2) {
+    return player.name + ' panicked and failed to act!';
+  }
 
-      var target = getTarget(inputs[1]);
-      if (target === 'unknown') {
-        return player.name + 'casts a spell on nobody.';
-      } 
+  var target = getTarget(inputs[1]);
+  if (target === 'unknown') {
+    return player.name + ' casts a spell on nobody.';
+  } 
 
-      if (target === enemy && inputs.length >= 3) {
-        return player.castSpell(inputs[0],target,inputs[2]);
-      } else {
-        return player.castSpell(inputs[0],target);
-      }
-    }
-    rl.close();
-  });
+  if (target === enemy && inputs.length >= 3) {
+    return player.castSpell(inputs[0],target,inputs[2]);
+  } else {
+    return player.castSpell(inputs[0],target);
+  }
 }
 
 module.exports = getPlayerInput;

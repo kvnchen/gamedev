@@ -5,6 +5,7 @@
 var Player = require('./player'),
     boss = require('./bossRein'),
     gameController = require('./gameController'),
+    getPlayerInput = require('./getPlayerInput'),
     kelvin = new Player('kelvin'),
     reingod = new boss();
 
@@ -55,7 +56,10 @@ rl.on('line', function(line){
   if (line === 'quit') {
     rl.close();
   } else {
-    console.log('kelvin says ' + line);
+    //console.log('kelvin says ' + line);
+
+    console.log(getPlayerInput(line,kelvin,reingod));
+
     rl.prompt();    
   }
 }).on('close',function() {
