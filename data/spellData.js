@@ -12,7 +12,7 @@ var spell = {
     name: 'Heal',
     description: 'Repairs the body, closing wounds and restoring stamina.',
     damage: 0,
-    heal: 10,
+    heal: 12,
     buffs: [],
     debuffs: [],
     removesBuffs: [],

@@ -84,7 +84,9 @@ Reingod.prototype.advanceWoundState = function(spell) {
     // raw
     else if (this.woundState === 'raw') {
       if (spell.name === 'Heal') {
-        outputStr = 'The wound closes.\nThe Reingod no longer wishes to kill you!\n';
+        outputStr = this.takeHeal(spell.heal);
+        this.isPacified = true;
+        outputStr += 'The wound closes.\nThe Reingod no longer wishes to kill you!\n';
       } else if (spell.name === 'Ignite') {
         outputStr = 'You burn the raw wound.\n';
       } else {

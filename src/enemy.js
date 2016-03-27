@@ -18,6 +18,7 @@ function Enemy(name) {
   this.debuffs = [];
   this.goldDrop = 0;
   this.itemDrops = [];
+  this.isPacified = false;
 }
 
 Enemy.prototype.takeDamage = function(dmg) {
@@ -29,6 +30,14 @@ Enemy.prototype.takeDamage = function(dmg) {
     outputStr += this.name + ' is defeated!\n';
   }
   return outputStr;
+};
+
+Enemy.prototype.takeHeal = function(heal) {
+  this.currentHealth += heal;
+  if (this.currentHealth >= this.maxHealth) {
+    this.currentHealth = this.maxHealth;
+  }
+  return this.name + ' gains ' + heal + ' life. (' + this.currentHealth + '/' + this.maxHealth + ')\n';
 };
 
 Enemy.prototype.gainDebuff = function(debuff) {

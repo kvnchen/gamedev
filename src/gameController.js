@@ -25,7 +25,7 @@ function startCombat(player, enemy) {
     if (player.currentHealth === 0) {
       console.log('Game over');
       return true;
-    } else if (enemy.currentHealth === 0) {
+    } else if (enemy.currentHealth === 0 || enemy.isPacified) {
       console.log('Victory!');
       return true;
     } else {
