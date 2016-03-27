@@ -8,7 +8,7 @@ var Player = require('./player'),
     kelvin = new Player('kelvin'),
     reingod = new boss();
 
-var output = kelvin.getStatus() + '\n'
+var output = '\n' + kelvin.getStatus() + '\n'
            + reingod.getStatus() + '\n'
 
 /*          // healing
@@ -45,7 +45,6 @@ gameController(kelvin, reingod);
 var gameLine = 'What is your name?';
 console.log(gameLine);
 
-
 rl.on('line', function(line){
   // Get player name
   if (gameLine === 'What is your name?' || gameLine === 'Your full name, please') {
@@ -57,15 +56,6 @@ rl.on('line', function(line){
       console.log('Hello, ' + name);
       gameLine = 'Issue your commands.';
       console.log(gameLine);
-    }
-  }
-
-  else if (gameLine = 'Issue your command.') {
-    if (line === 'quit') {
-      console.log('Thank you for playing this demo!');
-      rl.close();
-    } else {
-      console.log('Kelvin: ' + line);
     }
   }
 });*/

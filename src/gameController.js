@@ -21,27 +21,42 @@ function startCombat(player, enemy) {
   rl.setPrompt('Your command > ');
   rl.prompt();
 
+  function checkGameOver() {
+    if (player.currentHealth === 0) {
+      console.log('Game over');
+      return true;
+    } else if (enemy.currentHealth === 0) {
+      console.log('Victory!');
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   rl.on('line', function(line){
     if (line === 'quit') {
       rl.close();
     } else {
       output = getPlayerInput(line,player,enemy);
-      output += '\n' + enemy.getAction(player);
-
       console.log(output);
       
-      if (player.currentHealth === 0) {
-        console.log('\nGame over');
+      if (checkGameOver()) {
         rl.close();
-      } else if (enemy.currentHealth === 0) {
-        console.log('\nVictory!');
-        rl.close();
-      } else {
-        rl.prompt();
+        return;
       }
+
+      output = enemy.getAction(player);
+      console.log(output);
+
+      if (checkGameOver()) {
+        rl.close();
+        return;
+      }
+      
+      rl.prompt();
     }
   }).on('close',function() {
-    console.log('Thank you for playing this demo!');
+    console.log('\nThank you for playing this demo!\n');
   });
 };
 

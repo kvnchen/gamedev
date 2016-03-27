@@ -17,6 +17,7 @@ function Reingod() {
     wound: ['Ignite','Push','Pull','Heal']
   };
   this.woundState = 'frozen';
+  this.nextAction = 'frost';
 }
 
 Reingod.prototype = Object.create(enemy.prototype);
@@ -139,12 +140,18 @@ Reingod.prototype.charge = function(player) {
 };
 
 /*  Implement me!
- *  simple test - frost breath if player isnt frozen, charge if they are.
  */
 Reingod.prototype.getAction = function(player) {
-  if (_.contains(player.getDebuffs(), 'frozen')) {
+  /*if (_.contains(player.getDebuffs(), 'frozen')) {
     return this.charge(player);
   } else {
+    return this.frostBreath(player);
+  }*/
+  if (this.nextAction === 'charge') {
+    this.nextAction = 'frost';
+    return this.charge(player);
+  } else {
+    this.nextAction = 'charge';
     return this.frostBreath(player);
   }
 };
