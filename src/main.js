@@ -41,21 +41,6 @@ console.log(output);
 //gameController(kelvin, reingod);
 
 
-// basic stdin reading
-
-/*process.stdin.setEncoding('utf8');
-
-process.stdin.on('readable', () => {
-  var chunk = process.stdin.read();
-  if (chunk !== null) {
-    process.stdout.write(`data: ${chunk}`);
-  }
-});
-
-process.stdin.on('end', () => {
-  process.stdout.write('end');
-});*/
-
 var readline = require('readline');
 var rl = readline.createInterface({
   input: process.stdin,
@@ -63,14 +48,27 @@ var rl = readline.createInterface({
   terminal: false
 });
 
-var name = '';
+rl.setPrompt('Your command > ');
+rl.prompt();
+
+rl.on('line', function(line){
+  if (line === 'quit') {
+    rl.close();
+  } else {
+    console.log('kelvin says ' + line);
+    rl.prompt();    
+  }
+}).on('close',function() {
+  console.log('Thank you for playing this demo!');
+});
+
+/*var name = '';
 var gameLine = 'What is your name?';
 console.log(gameLine);
 
 
 rl.on('line', function(line){
   // Get player name
-
   if (gameLine === 'What is your name?' || gameLine === 'Your full name, please') {
     if (line === '') {
       gameLine = 'Your full name, please';
@@ -81,7 +79,7 @@ rl.on('line', function(line){
       gameLine = 'Issue your commands.';
       console.log(gameLine);
     }
-  } 
+  }
 
   else if (gameLine = 'Issue your command.') {
     if (line === 'quit') {
@@ -91,4 +89,4 @@ rl.on('line', function(line){
       console.log('Kelvin: ' + line);
     }
   }
-});
+});*/

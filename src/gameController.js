@@ -1,7 +1,7 @@
 /*
  *  Handles logic such as turn order, combat state changes, win conditions, etc.
  *  
- *
+ *  want it to wait for player input before advancing turns/resolving combat states
  */
 
 var _ = require('underscore'),
