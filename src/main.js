@@ -56,11 +56,20 @@ rl.on('line', function(line){
   if (line === 'quit') {
     rl.close();
   } else {
-    //console.log('kelvin says ' + line);
+    output = getPlayerInput(line,kelvin,reingod);
+    output += '\n' + reingod.getAction(kelvin);
 
-    console.log(getPlayerInput(line,kelvin,reingod));
-
-    rl.prompt();    
+    console.log(output);
+    
+    if (kelvin.currentHealth === 0) {
+      console.log('\nGame over');
+      rl.close();
+    } else if (reingod.currentHealth === 0) {
+      console.log('\nVictory!');
+      rl.close();
+    } else {
+      rl.prompt();
+    }
   }
 }).on('close',function() {
   console.log('Thank you for playing this demo!');
