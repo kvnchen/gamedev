@@ -5,7 +5,6 @@
 var Player = require('./player'),
     boss = require('./bossRein'),
     gameController = require('./gameController'),
-    getPlayerInput = require('./getPlayerInput'),
     kelvin = new Player('kelvin'),
     reingod = new boss();
 
@@ -39,41 +38,8 @@ var output = kelvin.getStatus() + '\n'
 console.log(output);
 
 // gameController test
-//gameController(kelvin, reingod);
+gameController(kelvin, reingod);
 
-
-var readline = require('readline');
-var rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-  terminal: false
-});
-
-rl.setPrompt('Your command > ');
-rl.prompt();
-
-rl.on('line', function(line){
-  if (line === 'quit') {
-    rl.close();
-  } else {
-    output = getPlayerInput(line,kelvin,reingod);
-    output += '\n' + reingod.getAction(kelvin);
-
-    console.log(output);
-    
-    if (kelvin.currentHealth === 0) {
-      console.log('\nGame over');
-      rl.close();
-    } else if (reingod.currentHealth === 0) {
-      console.log('\nVictory!');
-      rl.close();
-    } else {
-      rl.prompt();
-    }
-  }
-}).on('close',function() {
-  console.log('Thank you for playing this demo!');
-});
 
 /*var name = '';
 var gameLine = 'What is your name?';
