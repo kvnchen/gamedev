@@ -4,7 +4,6 @@
 
 var _ = require('underscore'),
     util = require('../utils/util'),
-    getPlayerInput = require('./getPlayerInput'),
     weapon = require('./weapon'),
     armor = require('./armor');
 
@@ -155,9 +154,37 @@ Player.prototype.resolveSpell = function(spell) {
   return outputStr;
 };
 
-// Implement me!
-Player.prototype.getAction = function(enemy) {
-  return getPlayerInput(this, enemy);
+// We pass the enemy obj because we need to map the target name to the enemy obj
+// enemy might be an array later, if we allow combat vs multiple enemies
+Player.prototype.getAction = function(line, enemy) {
+  var self = this;
+
+  function getTarget(str) {
+    if (str === self.name) {
+      return self;
+    } else if (str === enemy.name) {
+      return enemy;
+    } else {
+      return 'unknown';
+    }
+  }
+
+  // expect format 'spell target <optional area>'
+  var inputs = line.split(' ');
+  if (inputs.length < 2) {
+    return self.name + ' panicked and failed to act!';
+  }
+
+  var target = getTarget(inputs[1]);
+  if (target === 'unknown') {
+    return self.name + ' casts a spell on nobody.';
+  } 
+
+  if (target === enemy && inputs.length >= 3) {
+    return self.castSpell(inputs[0],target,inputs[2]);
+  } else {
+    return self.castSpell(inputs[0],target);
+  }
 };
 
 module.exports = Player;

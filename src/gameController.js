@@ -6,7 +6,6 @@
 
 var _ = require('underscore'),
     util = require('../utils/util'),
-    getPlayerInput = require('./getPlayerInput'),
     readline = require('readline'); 
 
 function startCombat(player, enemy) {
@@ -33,11 +32,12 @@ function startCombat(player, enemy) {
     }
   }
 
+  // get player input
   rl.on('line', function(line){
     if (line === 'quit') {
       rl.close();
     } else {
-      output = getPlayerInput(line,player,enemy);
+      output = player.getAction(line,enemy);
       console.log(output);
       
       if (checkGameOver()) {
