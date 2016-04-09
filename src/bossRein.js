@@ -10,14 +10,14 @@ function Reingod() {
   this.maxHealth = 128;
   this.currentHealth = 128;
   this.goldDrop = 10000;
-  this.targetAreas = ['head', 'wound'];
+  this.targetAreas = ['face', 'wound'];
   this.attacks = ['Charge', 'Frost Breath'];
   this.validSpellTargets = {
-    head: ['Ignite'],
+    face: ['Ignite'],
     wound: ['Ignite','Push','Pull','Heal']
   };
   this.woundState = 'frozen';
-  this.nextAction = 'frost';
+  this.frostCounter = 0;
 }
 
 Reingod.prototype = Object.create(enemy.prototype);
@@ -32,11 +32,27 @@ Reingod.prototype.resolveSpell = function (spell, area) {
     // handle spell based on area targeted
     if (area === 'wound') {
       outputStr += this.advanceWoundState(spell);
+    } else {
+      outputStr += this.hitFace(spell);
     }
   }
   return outputStr;
 };
 
+Reingod.prototype.hitFace = function(spell) {
+  var outputStr = '';
+  if (_.contains(this.validSpellTargets.face, spell.name)) {
+    outputStr = this.takeDamage(spell.damage);
+  } else {
+    outputStr = 'That spell had no effect.\n';
+  }
+
+  return outputStr;
+};
+
+/*
+ *  The writing is really cringy - rework at some point..
+ */
 Reingod.prototype.advanceWoundState = function(spell) {
   var outputStr = '';
   if (_.contains(this.validSpellTargets.wound, spell.name)) {
@@ -51,7 +67,7 @@ Reingod.prototype.advanceWoundState = function(spell) {
         this.woundState = 'embedded';
         outputStr = 'Blazing heat melts the ice away! Blood begins to flow...\n'
                   + this.gainDebuff('bleeding')
-                  + this.takeDamage(10);
+                  + this.takeDamage(spell.damage);
       } else {
         outputStr = 'Whatever you tried to do, it had no effect.\n';
       }
@@ -75,7 +91,7 @@ Reingod.prototype.advanceWoundState = function(spell) {
         this.woundState = 'embedded hot';
         outputStr = 'The axe head glows with heat. The bleeding ceases as flesh is singed.\n' 
                   + this.removeDebuff('bleeding') 
-                  + this.takeDamage(30);
+                  + this.takeDamage(spell.damage + 20);
       } else {
         outputStr = 'Whatever you tried to do, it had no effect.\n';
       }
@@ -89,7 +105,7 @@ Reingod.prototype.advanceWoundState = function(spell) {
         outputStr += 'The wound closes.\nThe Reingod no longer wishes to kill you!\n';
       } else if (spell.name === 'Ignite') {
         outputStr = 'You burn the raw wound.\n'
-                  + this.takeDamage(spell.damage);
+                  + this.takeDamage(spell.damage + 5);
       } else {
         outputStr = 'Whatever you tried to do, it had no effect.\n';
       } 
@@ -115,7 +131,17 @@ Reingod.prototype.advanceWoundState = function(spell) {
 
     // embedded deeply
     else if (this.woundState === 'embedded deeply') {
-      // implement me!
+      if (spell.name === 'Push') {
+        outputStr = 'The axe can go no deeper.\n';
+      } else if (spell.name === 'Pull') {
+        outputStr = 'It won\'t budge.\n';
+      } else if (spell.name === 'Heal') {
+        outputStr = 'It\'s a little to late for that now...\n';
+      } else if (spell.name === 'Ignite') {
+        outputStr = this.takeDamage(spell.damage);
+      } else {
+        outputStr = 'Whatever you tried to do, it had no effect.\n';
+      }
     }
   } else {
     outputStr = 'That spell had no effect.\n';
@@ -150,16 +176,14 @@ Reingod.prototype.charge = function(player) {
 /*  Implement me!
  */
 Reingod.prototype.getAction = function(player) {
-  /*if (_.contains(player.getDebuffs(), 'frozen')) {
+  if (this.frostCounter === 3) {
+    this.frostCounter = 0;
     return this.charge(player);
+  } else if (this.frostCounter === 2) {
+    this.frostCounter++;
+    return this.frostBreath(player) + '\nReingod lowers its head, pointing its antlers towards you.\n';
   } else {
-    return this.frostBreath(player);
-  }*/
-  if (this.nextAction === 'charge') {
-    this.nextAction = 'frost';
-    return this.charge(player);
-  } else {
-    this.nextAction = 'charge';
+    this.frostCounter++;
     return this.frostBreath(player);
   }
 };
