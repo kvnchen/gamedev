@@ -83,4 +83,20 @@ Enemy.prototype.getStatus = function() {
   return status;
 };
 
+Enemy.prototype.handleDebuffs = function() {
+  var self = this;
+  var outputStr = '';
+  _.each(self.debuffs, function(debuff) {
+    if (debuff === 'bleeding') {
+      outputStr += self.name + ' bleeds. ' + self.takeDamage(3);
+    } else if (debuff === 'bleedingHeavy') {
+      outputStr += self.name + ' bleeds heavily. ' + self.takeDamage(6);
+    } else {
+
+    }
+  });
+
+  return outputStr;
+};
+
 module.exports = Enemy;
