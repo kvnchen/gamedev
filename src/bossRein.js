@@ -20,6 +20,7 @@ function Reingod() {
   this.frostCounter = 0;
   this.axeTemp = 0;
   this.iceTemp = 0;
+  this.phase = 1;
 }
 
 Reingod.prototype = Object.create(enemy.prototype);
@@ -206,17 +207,33 @@ Reingod.prototype.getAction = function(player) {
   // first take bleed damage, if applicable
   var outputStr = this.handleDebuffs();
 
-  if (this.frostCounter === 3) {
-    this.frostCounter = 0;
-    outputStr += this.charge(player);
-  } else if (this.frostCounter === 2) {
-    this.frostCounter++;
-    outputStr += this.frostBreath(player) + '\nReingod lowers its head, pointing its antlers towards you.\n';
-  } else if (this.frostCounter === -1) {
-    this.frostCounter++;
-  } else {
-    this.frostCounter++;
-    outputStr += this.frostBreath(player);
+  // Check hp for phase transitions
+  
+
+  // Phase 1: 3x frost, 1x charge
+  if (this.phase === 1) {
+    if (this.frostCounter === 3) {
+      this.frostCounter = 0;
+      outputStr += this.charge(player);
+    } else if (this.frostCounter === 2) {
+      this.frostCounter++;
+      outputStr += this.frostBreath(player) + '\nReingod lowers its head, pointing its antlers towards you.\n';
+    } else if (this.frostCounter === -1) {
+      this.frostCounter++;
+    } else {
+      this.frostCounter++;
+      outputStr += this.frostBreath(player);
+    }
+  } 
+
+  // Phase 2: 
+  else if (this.phase === 2) {
+    
+  }
+
+  // Phase 3: 
+  else {
+    
   }
 
   return outputStr;
