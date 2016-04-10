@@ -42,7 +42,15 @@ Reingod.prototype.resolveSpell = function (spell, area) {
 Reingod.prototype.hitFace = function(spell) {
   var outputStr = '';
   if (_.contains(this.validSpellTargets.face, spell.name)) {
-    outputStr = this.takeDamage(spell.damage);
+    if (spell.name === 'Ignite') {
+      if (this.frostCounter === 3) {
+        this.frostCounter = -1;
+        outputStr = 'The fire blinds Reingod, halting its charge!\n';
+      }
+      outputStr += this.takeDamage(spell.damage);
+    } else {
+      outputStr = 'How did you get to this branch of logic?\n';
+    }
   } else {
     outputStr = 'That spell had no effect.\n';
   }
@@ -182,6 +190,9 @@ Reingod.prototype.getAction = function(player) {
   } else if (this.frostCounter === 2) {
     this.frostCounter++;
     return this.frostBreath(player) + '\nReingod lowers its head, pointing its antlers towards you.\n';
+  } else if (this.frostCounter === -1) {
+    this.frostCounter++;
+    return '';
   } else {
     this.frostCounter++;
     return this.frostBreath(player);
