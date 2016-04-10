@@ -7,8 +7,8 @@ var enemy = require('./enemy'),
 
 function Reingod() {
   enemy.call(this, 'Reingod');
-  this.maxHealth = 128;
-  this.currentHealth = 128;
+  this.maxHealth = 160;
+  this.currentHealth = 160;
   this.goldDrop = 10000;
   this.targetAreas = ['face', 'wound'];
   this.attacks = ['Charge', 'Frost Breath'];
@@ -51,7 +51,7 @@ Reingod.prototype.hitFace = function(spell) {
   var outputStr = '';
   if (_.contains(this.validSpellTargets.face, spell.name)) {
     if (spell.name === 'Ignite') {
-      if (this.frostCounter === 2) {
+      if (this.frostCounter === 3) {
         this.frostCounter = -1;
         outputStr = 'The fire blinds Reingod, halting its charge!\n';
       }
@@ -100,13 +100,13 @@ Reingod.prototype.advanceWoundState = function(spell) {
       if (spell.name === 'Pull') {
         this.woundState = 'raw';
         outputStr = 'The axe is ripped from the flesh, exposing the ghastly wound!\n'
-                  + this.takeDamage(20);
+                  + this.takeDamage(16);
       } else if (spell.name === 'Push') {
         this.woundState = 'embedded deeply';
         outputStr = 'The blade is thrust deeper, and the creature howls in pain!\nBlood flow intensifies.\n'
                   + this.removeDebuff('bleeding')
                   + this.gainDebuff('bleedingHeavy')
-                  + this.takeDamage(40);
+                  + this.takeDamage(32);
       } else if (spell.name === 'Heal') {
         outputStr = 'The axe is still preventing the wound from closing.\n';
       } else if (spell.name === 'Ignite') {
@@ -114,7 +114,7 @@ Reingod.prototype.advanceWoundState = function(spell) {
           this.woundState = 'embedded hot';
           outputStr = 'The axe head burns with furious heat. The bleeding ceases as flesh is singed!\n' 
                     + this.removeDebuff('bleeding') 
-                    + this.takeDamage(spell.damage + 20);
+                    + this.takeDamage(spell.damage + 8);
         } else {
           this.axeTemp++;
           outputStr = 'The axehead begins to glow.\n'
@@ -133,7 +133,7 @@ Reingod.prototype.advanceWoundState = function(spell) {
         outputStr += 'The wound closes.\nReingod no longer wishes to kill you!\n';
       } else if (spell.name === 'Ignite') {
         outputStr = 'You burn the raw wound.\n'
-                  + this.takeDamage(spell.damage + 5);
+                  + this.takeDamage(spell.damage + 4);
       } else {
         outputStr = 'Whatever you tried to do, it had no effect.\n';
       } 
@@ -147,7 +147,7 @@ Reingod.prototype.advanceWoundState = function(spell) {
       } else if (spell.name === 'Pull') {
         this.woundState = 'raw';
         outputStr = 'The axe is ripped from the flesh, exposing the ghastly wound!\n'
-                  + this.takeDamage(20);
+                  + this.takeDamage(16);
       } else if (spell.name === 'Heal') {
         outputStr = 'If you wanted to help him, maybe you shouldn\'t have set the axe on fire.\n';
       } else if (spell.name === 'Ignite') {
@@ -180,7 +180,7 @@ Reingod.prototype.advanceWoundState = function(spell) {
 Reingod.prototype.frostBreath = function(player) {
   var outputStr = 'Reingod breathes frost!!\nThe ground, and your legs, freeze over.\n'
                 + player.gainDebuff('frozen')
-                + player.takeDamage(5);
+                + player.takeDamage(4);
 
   return outputStr;
 };
@@ -192,7 +192,7 @@ Reingod.prototype.charge = function(player) {
   if (_.contains(playerDebuffs, 'frozen')) {
     outputStr += 'The frost encases your legs, preventing movement!\n'
               + player.removeDebuff('frozen')
-              + player.takeDamage(20);
+              + player.takeDamage(16);
   } else {
     outputStr += 'You barely sidestep the beast\'s fury!\n';
   }
@@ -206,10 +206,10 @@ Reingod.prototype.getAction = function(player) {
   // first take bleed damage, if applicable
   var outputStr = this.handleDebuffs();
 
-  if (this.frostCounter === 2) {
+  if (this.frostCounter === 3) {
     this.frostCounter = 0;
     outputStr += this.charge(player);
-  } else if (this.frostCounter === 1) {
+  } else if (this.frostCounter === 2) {
     this.frostCounter++;
     outputStr += this.frostBreath(player) + '\nReingod lowers its head, pointing its antlers towards you.\n';
   } else if (this.frostCounter === -1) {

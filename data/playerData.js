@@ -7,8 +7,8 @@
 function getPlayerData() {
   var playerData = {
     name: 'Kelvin',
-    maxHealth: 30,
-    currentHealth: 30,
+    maxHealth: 20,
+    currentHealth: 20,
     weapon: 'Forked Oak Staff',
     armor: 'Novice Robes',
     runes: [],

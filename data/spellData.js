@@ -12,7 +12,7 @@ var spell = {
     name: 'Heal',
     description: 'Repairs the body, closing wounds and restoring stamina.',
     damage: 0,
-    heal: 20,
+    heal: 6,
     buffs: [],
     debuffs: [],
     removesBuffs: [],
@@ -41,7 +41,7 @@ var spell = {
   Ignite: {
     name: 'Ignite',
     description: 'Burns the target.',
-    damage: 10,
+    damage: 8,
     heal: 0,
     buffs: [],
     debuffs: [],
