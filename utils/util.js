@@ -7,6 +7,7 @@ var _ = require('underscore'),
     weaponData = require('../data/weaponData'),
     armorData = require('../data/armorData'),
     spellData = require('../data/spellData'),
+    debuffData = require('../data/debuffData'),
     weapon = require('../src/weapon'),
     armor = require('../src/armor'),
     spell = require('../src/spell');
@@ -114,6 +115,7 @@ function Util() {
     return output;
   };
 
+  // for a given spell cast on a unit, handle the buffs/debuffs added/removed
   this.handleBuffsAndDebuffs = function(unit, spell) {
     var output = '';
 
@@ -136,6 +138,11 @@ function Util() {
     });
 
     return output;
+  };
+
+  // Given a debuff name, return the object
+  this.getDebuff = function(debuff) {
+    return debuffData[debuff];
   };
 }
 

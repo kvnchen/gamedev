@@ -40,11 +40,13 @@ Enemy.prototype.takeHeal = function(heal) {
   return this.name + ' gains ' + heal + ' life. (' + this.currentHealth + '/' + this.maxHealth + ')\n';
 };
 
+// debuff is the string name of the debuff
 Enemy.prototype.gainDebuff = function(debuff) {
-  var outputStr = '';
-  if (!_.contains(this.debuffs, debuff)) {
-    this.debuffs.push(debuff);
-    outputStr = this.name + ' gains debuff ' + debuff + '\n';
+  var outputStr = '',
+      debuffObj = util.getDebuff(debuff);
+  if (!_.contains(this.debuffs, debuffObj)) {
+    this.debuffs.push(debuffObj);
+    outputStr = this.name + ' gains debuff ' + debuffObj.name + '\n';
   } else {
     // do something different if creature already has debuff
   }
@@ -52,11 +54,12 @@ Enemy.prototype.gainDebuff = function(debuff) {
 };
 
 Enemy.prototype.removeDebuff = function(debuff) {
-  var index = _.indexOf(this.debuffs, debuff),
+  var debuffObj = util.getDebuff(debuff),
+      index = _.indexOf(this.debuffs, debuffObj),
       outputStr = '';
   if (index !== -1) {
     this.debuffs.splice(index, 1);
-    outputStr = this.name + ' loses debuff ' + debuff + '\n';
+    outputStr = this.name + ' loses debuff ' + debuffObj.name + '\n';
   }
   return outputStr;
 };
@@ -87,10 +90,10 @@ Enemy.prototype.handleDebuffs = function() {
   var self = this;
   var outputStr = '';
   _.each(self.debuffs, function(debuff) {
-    if (debuff === 'bleeding') {
-      outputStr += self.name + ' bleeds. ' + self.takeDamage(3);
-    } else if (debuff === 'bleedingHeavy') {
-      outputStr += self.name + ' bleeds heavily. ' + self.takeDamage(6);
+    if (debuff.name === 'Bleeding') {
+      outputStr += self.name + ' bleeds. ' + self.takeDamage(debuff.damagePerTurn);
+    } else if (debuff.name === 'Bleeding Heavily') {
+      outputStr += self.name + ' bleeds heavily. ' + self.takeDamage(debuff.damagePerTurn);
     } else {
 
     }
