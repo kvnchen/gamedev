@@ -205,35 +205,51 @@ Reingod.prototype.charge = function(player) {
  */
 Reingod.prototype.getAction = function(player) {
   // first take bleed damage, if applicable
-  var outputStr = this.handleDebuffs();
+  var outputStr = this.handleDebuffs(),
+      self = this;
 
   // Check hp for phase transitions
-  
+  if ((self.phase === 1 && self.currentHealth <= 110) ||
+      (self.phase === 2 && self.currentHealth <= 60)) {
+    self.phase = self.phase + 0.5;
+  }
 
   // Phase 1: 3x frost, 1x charge
-  if (this.phase === 1) {
-    if (this.frostCounter === 3) {
-      this.frostCounter = 0;
-      outputStr += this.charge(player);
-    } else if (this.frostCounter === 2) {
-      this.frostCounter++;
-      outputStr += this.frostBreath(player) + '\nReingod lowers its head, pointing its antlers towards you.\n';
-    } else if (this.frostCounter === -1) {
-      this.frostCounter++;
+  if (self.phase === 1) {
+    if (self.frostCounter === 3) {
+      self.frostCounter = 0;
+      outputStr += self.charge(player);
+    } else if (self.frostCounter === 2) {
+      self.frostCounter++;
+      outputStr += self.frostBreath(player) + '\nReingod lowers its head, pointing its antlers towards you.\n';
+    } else if (self.frostCounter === -1) {
+      self.frostCounter++;
     } else {
-      this.frostCounter++;
-      outputStr += this.frostBreath(player);
+      self.frostCounter++;
+      outputStr += self.frostBreath(player);
     }
-  } 
+  }
+
+  // Phase 1.5: first rest phase
+  else if (self.phase === 1.5) {
+    outputStr += 'Reingod stops to rest for a moment.\n';
+    self.phase = self.phase + 0.5;
+  }
 
   // Phase 2: 
-  else if (this.phase === 2) {
-    
+  else if (self.phase === 2) {
+    outputStr += self.charge(player);
+  }
+
+  // Phase 2.5: second rest phase
+  else if (self.phase === 2.5) {
+    outputStr += 'Reingod pauses, looking exhausted.\n';
+    self.phase = self.phase + 0.5;
   }
 
   // Phase 3: 
   else {
-    
+    outputStr += self.charge(player);
   }
 
   return outputStr;
