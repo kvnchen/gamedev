@@ -18,6 +18,12 @@ function Reingod() {
   };
   this.woundState = 'frozen';
   this.frostCounter = 0;
+  this.nextAction = '';
+  this.actionMap = {
+    'phase1': ['frostBreath', 'frostBreath', 'frostBreath', 'charge'],
+    'phase2': ['frostBreath', 'frostBreath', 'frostBreath', 'charge', 'guard'],
+    'phase3': []
+  };
   this.axeTemp = 0;
   this.iceTemp = 0;
   this.phase = 1;
@@ -28,7 +34,8 @@ Reingod.prototype = Object.create(enemy.prototype);
 Reingod.prototype.constructor = Reingod;
 
 Reingod.prototype.resolveSpell = function (spell, area) {
-  var outputStr = '';
+  var outputStr = '',
+      self = this;
 
   // default to face
   if (area === undefined) {
@@ -38,11 +45,16 @@ Reingod.prototype.resolveSpell = function (spell, area) {
   if (!_.contains(this.targetAreas, area)) {
     outputStr = 'The spell misses wildly.\n';
   } else {
+    if (_.contains(self.buffs, 'guard')) {
+      outputStr = 'Reingod dodges your spell, and counterattacks!\n'
+                + self.removeDebuff('guard');
+    }
+
     // handle spell based on area targeted
-    if (area === 'wound') {
-      outputStr += this.advanceWoundState(spell);
+    else if (area === 'wound') {
+      outputStr = this.advanceWoundState(spell);
     } else {
-      outputStr += this.hitFace(spell);
+      outputStr = this.hitFace(spell);
     }
   }
   return outputStr;
@@ -201,6 +213,20 @@ Reingod.prototype.charge = function(player) {
   return outputStr;
 };
 
+Reingod.prototype.kick = function(player) {
+  var outputStr = 'Reingod delivers a swift kick!\n'
+                + player.takeDamage(8);
+
+  return outputStr;
+};
+
+Reingod.prototype.guard = function() {
+  var outputStr = 'Reingod takes a defensive stance.\n'
+                + this.gainBuff('guard');
+
+  return outputStr;
+};
+
 /*  Implement me!
  */
 Reingod.prototype.getAction = function(player) {
@@ -238,7 +264,7 @@ Reingod.prototype.getAction = function(player) {
 
   // Phase 2: 
   else if (self.phase === 2) {
-    outputStr += self.charge(player);
+    
   }
 
   // Phase 2.5: second rest phase
@@ -249,7 +275,7 @@ Reingod.prototype.getAction = function(player) {
 
   // Phase 3: 
   else {
-    outputStr += self.charge(player);
+    //outputStr += self.charge(player);
   }
 
   return outputStr;

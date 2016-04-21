@@ -7,6 +7,7 @@ var _ = require('underscore'),
     weaponData = require('../data/weaponData'),
     armorData = require('../data/armorData'),
     spellData = require('../data/spellData'),
+    buffData = require('../data/buffData'),
     debuffData = require('../data/debuffData'),
     weapon = require('../src/weapon'),
     armor = require('../src/armor'),
@@ -143,6 +144,10 @@ function Util() {
   // Given a debuff name, return the object
   this.getDebuff = function(debuff) {
     return debuffData[debuff];
+  };
+
+  this.getBuff = function(buff) {
+    return buffData[buff];
   };
 }
 

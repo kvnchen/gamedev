@@ -40,6 +40,15 @@ Enemy.prototype.takeHeal = function(heal) {
   return this.name + ' gains ' + heal + ' life. (' + this.currentHealth + '/' + this.maxHealth + ')\n';
 };
 
+Enemy.prototype.gainBuff = function(buff) {
+  var outputStr = '',
+      buffObj = util.getBuff(buff);
+  if (!_.contains(this.buffs, buffObj)) {
+    this.buffs.push(buffObj);
+    outputStr = this.name + ' gains buff ' + buffObj.name + '\n';
+  }
+};
+
 // debuff is the string name of the debuff
 Enemy.prototype.gainDebuff = function(debuff) {
   var outputStr = '',
