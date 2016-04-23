@@ -23,10 +23,11 @@ function Reingod() {
   this.phaseActions = [
     ['frostBreath', 'frostBreath', 'frostBreath', 'charge'],
     ['frostBreath', 'frostBreath', 'frostBreath', 'charge', 'guard'],
-    []
+    ['frostBreath', 'guard', 'frostBreath', 'distance', 'charge']
   ];
   this.axeTemp = 0;
   this.iceTemp = 0;
+  this.isDistanced = false;
   this.phase = 0;
 }
 
@@ -46,10 +47,16 @@ Reingod.prototype.resolveSpell = function (spell, area) {
   if (!_.contains(this.targetAreas, area)) {
     outputStr = 'The spell misses wildly.\n';
   } else {
+    // dodge and counter if on guard
     if (_.contains(self.buffs, util.getBuff('guard'))) {
       self.nextAction = 'kick';
       outputStr = 'Reingod dodges your spell, and counterattacks!\n'
                 + self.removeBuff('guard');
+    }
+
+    // avoid all spells if distanced
+    else if (self.isDistanced) {
+      outputStr = 'Reingod is too far away!\n';
     }
 
     // handle spell based on area targeted
@@ -231,6 +238,11 @@ Reingod.prototype.guard = function() {
   return outputStr;
 };
 
+Reingod.prototype.distance = function() {
+  this.isDistanced = true;
+  return outputStr = 'Reingod retreats to a safe distance, and prepares its charge...\n';
+};
+
 // special case when charge is interrupted with ignite
 Reingod.prototype.chargeInterrupt = function() {
   return 'Reingod shakes the flames out of its eyes.\n';
@@ -242,6 +254,12 @@ Reingod.prototype.getAction = function(player) {
   // first take bleed damage, if applicable
   var outputStr = this.handleDebuffs(),
       self = this;
+
+  // remove guard buff & reset distanced, if applicable
+  if (_.contains(self.buffs, util.getBuff('guard')) || this.isDistanced) {
+    outputStr += self.removeBuff('guard');
+    this.isDistanced = false;
+  }
 
   // Check hp for phase transitions
   if ((self.phase === 0 && self.currentHealth <= 110) ||
@@ -295,7 +313,16 @@ Reingod.prototype.getAction = function(player) {
 
   // Phase 3: 
   else {
-    outputStr += self.charge(player);
+    var actions = self.phaseActions[self.phase];
+
+    outputStr += self[self.nextAction](player);
+    self.actionCounter = (self.actionCounter + 1) % actions.length;
+    self.nextAction = actions[self.actionCounter];
+
+    // flavor text when next action is charge
+    if (self.nextAction === 'charge') {
+      outputStr += '\nReingod lowers its head, pointing its antlers towards you.\n';
+    }
   }
 
   return outputStr;
