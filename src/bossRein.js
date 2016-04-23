@@ -17,16 +17,16 @@ function Reingod() {
     wound: ['Ignite','Push','Pull','Heal']
   };
   this.woundState = 'frozen';
-  this.frostCounter = 0;
-  this.nextAction = '';
-  this.actionMap = {
-    'phase1': ['frostBreath', 'frostBreath', 'frostBreath', 'charge'],
-    'phase2': ['frostBreath', 'frostBreath', 'frostBreath', 'charge', 'guard'],
-    'phase3': []
-  };
+  this.nextAction = 'frostBreath';
+  this.actionCounter = 0;
+  this.phaseActions = [
+    ['frostBreath', 'frostBreath', 'frostBreath', 'charge'],
+    ['frostBreath', 'frostBreath', 'frostBreath', 'charge', 'guard'],
+    []
+  ];
   this.axeTemp = 0;
   this.iceTemp = 0;
-  this.phase = 1;
+  this.phase = 0;
 }
 
 Reingod.prototype = Object.create(enemy.prototype);
@@ -61,14 +61,16 @@ Reingod.prototype.resolveSpell = function (spell, area) {
 };
 
 Reingod.prototype.hitFace = function(spell) {
-  var outputStr = '';
-  if (_.contains(this.validSpellTargets.face, spell.name)) {
+  var outputStr = '',
+      self = this;
+  if (_.contains(self.validSpellTargets.face, spell.name)) {
     if (spell.name === 'Ignite') {
-      if (this.frostCounter === 3) {
-        this.frostCounter = -1;
+      if (self.nextAction === 'charge') {
+        // special attacks can be inserted by changed self.nextAction, but not incrementing the counter
+        self.nextAction = 'chargeInterrupt';
         outputStr = 'The fire blinds Reingod, halting its charge!\n';
       }
-      outputStr += this.takeDamage(spell.damage);
+      outputStr += self.takeDamage(spell.damage);
     } else {
       outputStr = 'How did you get to this branch of logic?\n';
     }
@@ -227,6 +229,11 @@ Reingod.prototype.guard = function() {
   return outputStr;
 };
 
+// special case when charge is interrupted with ignite
+Reingod.prototype.chargeInterrupt = function() {
+  return 'Reingod shakes the flames out of its eyes.\n';
+};
+
 /*  Implement me!
  */
 Reingod.prototype.getAction = function(player) {
@@ -235,47 +242,45 @@ Reingod.prototype.getAction = function(player) {
       self = this;
 
   // Check hp for phase transitions
-  if ((self.phase === 1 && self.currentHealth <= 110) ||
-      (self.phase === 2 && self.currentHealth <= 60)) {
+  if ((self.phase === 0 && self.currentHealth <= 110) ||
+      (self.phase === 1 && self.currentHealth <= 60)) {
     self.phase = self.phase + 0.5;
   }
 
   // Phase 1: 3x frost, 1x charge
-  if (self.phase === 1) {
-    if (self.frostCounter === 3) {
-      self.frostCounter = 0;
-      outputStr += self.charge(player);
-    } else if (self.frostCounter === 2) {
-      self.frostCounter++;
-      outputStr += self.frostBreath(player) + '\nReingod lowers its head, pointing its antlers towards you.\n';
-    } else if (self.frostCounter === -1) {
-      self.frostCounter++;
-    } else {
-      self.frostCounter++;
-      outputStr += self.frostBreath(player);
+  if (self.phase === 0) {
+    var actions = self.phaseActions[self.phase];
+
+    outputStr += self[self.nextAction](player);
+    self.actionCounter = (self.actionCounter + 1) % actions.length;
+    self.nextAction = actions[self.actionCounter];
+
+    // flavor text when next action is charge
+    if (self.nextAction === 'charge') {
+      outputStr += '\nReingod lowers its head, pointing its antlers towards you.\n';
     }
   }
 
   // Phase 1.5: first rest phase
-  else if (self.phase === 1.5) {
+  else if (self.phase === 0.5) {
     outputStr += 'Reingod stops to rest for a moment.\n';
     self.phase = self.phase + 0.5;
   }
 
   // Phase 2: 
-  else if (self.phase === 2) {
-    
+  else if (self.phase === 1) {
+    outputStr += self.charge(player);
   }
 
   // Phase 2.5: second rest phase
-  else if (self.phase === 2.5) {
+  else if (self.phase === 1.5) {
     outputStr += 'Reingod pauses, looking exhausted.\n';
     self.phase = self.phase + 0.5;
   }
 
   // Phase 3: 
   else {
-    //outputStr += self.charge(player);
+    outputStr += self.charge(player);
   }
 
   return outputStr;
