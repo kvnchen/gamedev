@@ -12,7 +12,7 @@ function Reingod() {
   this.currentHealth = 160;
   this.goldDrop = 10000;
   this.targetAreas = ['face', 'wound'];
-  this.attacks = ['Charge', 'Frost Breath'];
+  this.attacks = ['Charge', 'Frost Breath', 'Guard', 'Distance'];
   this.validSpellTargets = {
     face: ['Ignite'],
     wound: ['Ignite','Push','Pull','Heal']
