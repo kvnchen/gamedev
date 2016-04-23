@@ -23,7 +23,7 @@ var debuffs = {
   bleedingHeavy: {
     name: 'Bleeding Heavily',
     description: 'You are bleeding badly! Take a moderate amount of damage each turn.',
-    damagePerTurn: 4,
+    damagePerTurn: 3,
     healPerTurn: 0
   },
 };

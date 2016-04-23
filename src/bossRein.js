@@ -130,7 +130,7 @@ Reingod.prototype.advanceWoundState = function(spell) {
         outputStr = 'The blade is thrust deeper, and the creature howls in pain!\nBlood flow intensifies.\n'
                   + this.removeDebuff('bleeding')
                   + this.gainDebuff('bleedingHeavy')
-                  + this.takeDamage(32);
+                  + this.takeDamage(24);
       } else if (spell.name === 'Heal') {
         outputStr = 'The axe is still preventing the wound from closing.\n';
       } else if (spell.name === 'Ignite') {
@@ -267,8 +267,8 @@ Reingod.prototype.getAction = function(player) {
     self.phase = self.phase + 0.5;
   }
 
-  // Phase 1: 3x frost, 1x charge
-  if (self.phase === 0) {
+  // Phase 1, 2 & 3 AI.
+  if (self.phase === 0 || self.phase === 1 || self.phase === 2) {
     var actions = self.phaseActions[self.phase];
 
     outputStr += self[self.nextAction](player);
@@ -289,40 +289,12 @@ Reingod.prototype.getAction = function(player) {
     self.nextAction = self.phaseActions[self.phase][0];
   }
 
-  // Phase 2: 
-  else if (self.phase === 1) {
-    var actions = self.phaseActions[self.phase];
-
-    outputStr += self[self.nextAction](player);
-    self.actionCounter = (self.actionCounter + 1) % actions.length;
-    self.nextAction = actions[self.actionCounter];
-
-    // flavor text when next action is charge
-    if (self.nextAction === 'charge') {
-      outputStr += '\nReingod lowers its head, pointing its antlers towards you.\n';
-    }
-  }
-
   // Phase 2.5: second rest phase
   else if (self.phase === 1.5) {
     outputStr += 'Reingod pauses, looking exhausted.\n';
     self.phase = self.phase + 0.5;
     self.actionCounter = 0;
     self.nextAction = self.phaseActions[self.phase][0];
-  }
-
-  // Phase 3: 
-  else {
-    var actions = self.phaseActions[self.phase];
-
-    outputStr += self[self.nextAction](player);
-    self.actionCounter = (self.actionCounter + 1) % actions.length;
-    self.nextAction = actions[self.actionCounter];
-
-    // flavor text when next action is charge
-    if (self.nextAction === 'charge') {
-      outputStr += '\nReingod lowers its head, pointing its antlers towards you.\n';
-    }
   }
 
   return outputStr;
