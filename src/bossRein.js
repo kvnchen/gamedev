@@ -3,7 +3,8 @@
  */
 
 var enemy = require('./enemy'),
-    _ = require('underscore');
+    _ = require('underscore'),
+    util = require('../utils/util');
 
 function Reingod() {
   enemy.call(this, 'Reingod');
@@ -45,9 +46,10 @@ Reingod.prototype.resolveSpell = function (spell, area) {
   if (!_.contains(this.targetAreas, area)) {
     outputStr = 'The spell misses wildly.\n';
   } else {
-    if (_.contains(self.buffs, 'guard')) {
+    if (_.contains(self.buffs, util.getBuff('guard'))) {
+      self.nextAction = 'kick';
       outputStr = 'Reingod dodges your spell, and counterattacks!\n'
-                + self.removeDebuff('guard');
+                + self.removeBuff('guard');
     }
 
     // handle spell based on area targeted
@@ -265,17 +267,30 @@ Reingod.prototype.getAction = function(player) {
   else if (self.phase === 0.5) {
     outputStr += 'Reingod stops to rest for a moment.\n';
     self.phase = self.phase + 0.5;
+    self.actionCounter = 0;
+    self.nextAction = self.phaseActions[self.phase][0];
   }
 
   // Phase 2: 
   else if (self.phase === 1) {
-    outputStr += self.charge(player);
+    var actions = self.phaseActions[self.phase];
+
+    outputStr += self[self.nextAction](player);
+    self.actionCounter = (self.actionCounter + 1) % actions.length;
+    self.nextAction = actions[self.actionCounter];
+
+    // flavor text when next action is charge
+    if (self.nextAction === 'charge') {
+      outputStr += '\nReingod lowers its head, pointing its antlers towards you.\n';
+    }
   }
 
   // Phase 2.5: second rest phase
   else if (self.phase === 1.5) {
     outputStr += 'Reingod pauses, looking exhausted.\n';
     self.phase = self.phase + 0.5;
+    self.actionCounter = 0;
+    self.nextAction = self.phaseActions[self.phase][0];
   }
 
   // Phase 3: 

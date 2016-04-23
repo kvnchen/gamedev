@@ -47,6 +47,7 @@ Enemy.prototype.gainBuff = function(buff) {
     this.buffs.push(buffObj);
     outputStr = this.name + ' gains buff ' + buffObj.name + '\n';
   }
+  return outputStr;
 };
 
 // debuff is the string name of the debuff
@@ -58,6 +59,17 @@ Enemy.prototype.gainDebuff = function(debuff) {
     outputStr = this.name + ' gains debuff ' + debuffObj.name + '\n';
   } else {
     // do something different if creature already has debuff
+  }
+  return outputStr;
+};
+
+Enemy.prototype.removeBuff = function(buff) {
+  var buffObj = util.getBuff(buff),
+      index = _.indexOf(this.buffs, buffObj),
+      outputStr = '';
+  if (index !== -1) {
+    this.buffs.splice(index, 1);
+    outputStr = this.name + ' loses buff ' + buffObj.name + '\n';
   }
   return outputStr;
 };

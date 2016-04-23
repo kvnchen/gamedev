@@ -165,7 +165,7 @@ Player.prototype.getAction = function(line, enemy) {
   }
 
   function getTarget(str) {
-    if (str === self.name) {
+    if (str === self.name || str === 'Me') {
       return self;
     } else if (str === enemy.name) {
       return enemy;
