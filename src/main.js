@@ -1,6 +1,7 @@
 // This is the beginning of my game project
-// First milestone is to make a playable command-line version of the demo
-// next deadline April 1st 2016.
+// Current goal: wrap up command line boss-fight
+// Stretch goal: prototype winter-forest adventure area
+// Deadline: End of April
 
 var Player = require('./player'),
     boss = require('./bossRein'),
@@ -8,10 +9,10 @@ var Player = require('./player'),
     kelvin = new Player('kelvin'),
     reingod = new boss();
 
-var output = '\n' + kelvin.getStatus() + '\n'
+/*var output = '\n' + kelvin.getStatus() + '\n'
            + reingod.getStatus() + '\n'
 
-/*          // healing
+          // healing
           + kelvin.castSpell('Heal', kelvin) + '\n'
 
           // combat simulation
@@ -34,11 +35,18 @@ var output = '\n' + kelvin.getStatus() + '\n'
            //+ kelvin.castSpell('Push',reingod,'wound') + '\n';
 
 
-           + reingod.charge(kelvin) + '\n';*/
-console.log(output);
+           + reingod.charge(kelvin) + '\n';
+console.log(output);*/
 
-// gameController test
+
+
+
+// entry point
 gameController(kelvin, reingod);
+
+
+
+
 
 
 /*var name = '';

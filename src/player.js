@@ -9,7 +9,6 @@ var _ = require('underscore'),
 
 function Player(name) {
   // Default properties for a new player
-  this.name = name;
   this.maxHealth = 20;
   this.currentHealth = 20;
   this.spells = [];
@@ -19,20 +18,24 @@ function Player(name) {
   this.buffs = [];
   this.debuffs = [];
   this.gold = 0;
-}
 
-Player.prototype.loadProperties = function() {
-  var loadedData = util.buildPropertyObjs('player'),
-      self = this;
+  // Load player data, if it exists
+  function loadProperties(self) {
+    var loadedData = util.buildPropertyObjs('player');
 
-  function insertLoaded(key) {
-    if (_.has(loadedData, key)) {
-      self[key] = loadedData[key];
+    function insertLoaded(key) {
+      if (_.has(loadedData, key)) {
+        self[key] = loadedData[key];
+      }
     }
+
+    _.each(_.keys(self), insertLoaded);
   }
 
-  _.each(_.keys(self), insertLoaded);
-};
+  loadProperties(this);
+  this.name = name;
+}
+
 
 Player.prototype.getCurrentHealth = function() {
   return this.currentHealth;  
@@ -59,11 +62,9 @@ Player.prototype.getWeapon = function() {
 };
 
 Player.prototype.getStatus = function() {
-  this.loadProperties();
-
   var status = 'Status of ' + this.name + ':\n'
              + 'Current health: ' + this.currentHealth + '/' + this.maxHealth + '\n'
-             + 'Known Spells: ' + util.getAllNamesAndDesc(this.spells) + ' \n'
+             + 'Known Spells: \n' + util.getAllNamesAndDesc(this.spells) + ' \n\n'
              + 'Known Runes: ' + util.getArrayProp(this.runes) + ' \n'
              + 'Equipped Weapon: ' + util.getNameAndDesc(this.weapon) + '\n'
              + 'Equipped Armor: ' + util.getNameAndDesc(this.armor)+ '\n'
