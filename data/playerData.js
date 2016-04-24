@@ -6,7 +6,7 @@
 
 function getPlayerData() {
   var playerData = {
-    name: 'Kelvin',
+    name: 'Kelvin', // overwritten in current demo
     maxHealth: 20,
     currentHealth: 20,
     weapon: 'Forked Oak Staff',

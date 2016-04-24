@@ -17,6 +17,12 @@ Notes:
 
 -boss encounter is nearing "completion". Still feel some aspects are too frustrating to discover
 -player might be under too much pressure to "experiment". a free observe command for hints might make it ok
--rpg combat really does feel like a "solved" problem when its 1-on-1. I've tried adding interesting hidden interactions,
- but I don't know how successful players will be at finding them. 
+
+  Expanding on this, I think giving a (free) scouting action is the right way to go. Information is key.
+
+-rpg combat really does feel like a "solved" problem when its 1-on-1. Solved for me at any rate.
 -will need to get real playtesting on friends for feedback soon.
+
+-on phase 3, if boss is distanced and about to charge, and player's health is lower than ignite dmg, they're screwed.
+  
+  possible solution: reduce self-inflicted damage from ignite?

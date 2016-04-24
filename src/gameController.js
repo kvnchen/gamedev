@@ -18,14 +18,14 @@ function startGame(player, enemy) {
 
 
   // Intro - get player name
-  console.log('Welcome to this demo!\n\nWhat is your name?\n');
+  console.log('\nWelcome to this demo!\n\nWhat is your name?\n');
 
   rl.setPrompt('Your name > ');
   rl.prompt();
 
 
-  // sets the player name
-  function setName(line) {
+  // sets the player name and displays short intro
+  function intro(line) {
     if (line === '') {
       console.log('Your name, oh silent one?\n');
       rl.prompt();
@@ -82,13 +82,23 @@ function startGame(player, enemy) {
     rl.prompt();
   }
 
+  function help() {
+    console.log('\n<To do>\n');
+    rl.prompt();
+  }
+
   // get player input
   rl.on('line', function(line){
     if (line === 'quit' || line === 'exit' || line === 'close') {
       rl.close();
     } else {
-      if (gameState === 'intro') {
-        setName(line);
+      if (line === 'help') {
+        help();
+      } else if (line === '') {
+        console.log('\nType help for a list of commands.\n');
+        rl.prompt();
+      } else if (gameState === 'intro') {
+        intro(line);
       } else {
         handleCombat(line);
       }
