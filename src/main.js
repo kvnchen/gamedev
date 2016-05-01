@@ -1,5 +1,5 @@
 // This is the beginning of my game project
-// Current goal: wrap up command line boss-fight
+// Current goal: wrap up command line boss-fight, quality of life features
 // Stretch goal: prototype winter-forest adventure area
 // Deadline: End of April
 
@@ -40,30 +40,5 @@ console.log(output);*/
 
 
 
-
 // entry point
 gameController(kelvin, reingod);
-
-
-
-
-
-
-/*var name = '';
-var gameLine = 'What is your name?';
-console.log(gameLine);
-
-rl.on('line', function(line){
-  // Get player name
-  if (gameLine === 'What is your name?' || gameLine === 'Your full name, please') {
-    if (line === '') {
-      gameLine = 'Your full name, please';
-      console.log(gameLine);
-    } else {
-      name = line;
-      console.log('Hello, ' + name);
-      gameLine = 'Issue your commands.';
-      console.log(gameLine);
-    }
-  }
-});*/

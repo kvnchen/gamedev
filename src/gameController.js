@@ -83,8 +83,20 @@ function startGame(player, enemy) {
   }
 
   function help() {
-    console.log('\n<To do>\n');
+    var helpMsg = '\nFor a summary of your player status, type \'status\'\n' +
+                  '\nTo see the enemy status, type \'status\' followed by the enemy name.\nExample: \'status reingod\'\n' +
+                  '\nTo cast a spell, type the spell name, followed by the target, and optionally a target area.\n' + 
+                  '\nExample: To cast the spell \'Ignite\' on Reingod, type \'ignite reingod\'\n';
+    console.log(helpMsg);
     rl.prompt();
+  }
+
+  function getStatus(inputs) {
+    if (inputs.length === 1) {
+      console.log('\n' + player.getStatus());
+    } else {
+      console.log('\n' + enemy.getStatus());
+    }
   }
 
   // get player input
@@ -92,10 +104,14 @@ function startGame(player, enemy) {
     if (line === 'quit' || line === 'exit' || line === 'close') {
       rl.close();
     } else {
-      if (line === 'help') {
-        help();
-      } else if (line === '') {
+      var inputs = line.split(' ');
+      if (line === '') {
         console.log('\nType help for a list of commands.\n');
+        rl.prompt();
+      } else if (line === 'help') {
+        help();
+      } else if (inputs[0] === 'status') {
+        getStatus(inputs);
         rl.prompt();
       } else if (gameState === 'intro') {
         intro(line);
