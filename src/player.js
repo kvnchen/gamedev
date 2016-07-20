@@ -64,7 +64,7 @@ Player.prototype.getWeapon = function() {
 Player.prototype.getStatus = function() {
   var status = 'Status of ' + this.name + ':\n'
              + 'Current health: ' + this.currentHealth + '/' + this.maxHealth + '\n'
-             + 'Known Spells: \n' + util.getAllNamesAndDesc(this.spells) + ' \n'
+             + 'Known Spells: ' + util.getAllNamesAndDesc(this.spells) + ' \n'
 
       // NOTE: Currently not relevant to play demo
              // + 'Known Runes: ' + util.getArrayProp(this.runes) + ' \n'

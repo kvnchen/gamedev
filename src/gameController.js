@@ -144,9 +144,9 @@ function startGame(player, enemy) {
     rl.prompt();
   }
 
-  // get player input
+  // handle player input
   rl.on('line', function(line){
-    if (line === 'quit' || line === 'exit' || line === 'close' || line === 'fuck') {
+    if (line === 'quit' || line === 'exit' || line === 'close' || line === 'fuck' || line === 'this game is garbage') {
       rl.close();
     } else {
       var inputs = line.split(' ');
@@ -158,6 +158,14 @@ function startGame(player, enemy) {
       } else if (inputs[0] === 'status') {
         getStatus(inputs);
         rl.prompt();
+      } else if (line === 'skip' || line === 's') {
+        if (gameState === 'intro') {
+          introCounter = 2;
+          intro();
+        } else {
+          console.log('Can\'t skip this part.\n');
+          rl.prompt();
+        }
       } else if (gameState === 'retry') {
         if (line === 'y' || line === 'yes') {
           resetCombat();

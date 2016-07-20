@@ -111,7 +111,7 @@ function Util() {
     var output = '';
 
     _.each(arr, function(item) {
-      output += '\n' + self.getNameAndDesc(item);
+      output += '\n    ' + self.getNameAndDesc(item);
     });
     return output;
   };
