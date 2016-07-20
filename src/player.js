@@ -165,35 +165,41 @@ Player.prototype.resolveSpell = function(spell) {
 Player.prototype.getAction = function(line, enemy) {
   var self = this;
 
-  // capitalize the first letter of the string. It's annoying to have to capitalize inputs
-  function caseHandler(str) {
+  function lowerCase(str) {
+    return str.toLowerCase();
+  }
+
+  function capitalize(str) {
     return str.charAt(0).toUpperCase() + str.slice(1, str.length);
   }
 
   function getTarget(str) {
-    if (str === self.name || str === 'Me') {
+    if (str === self.name.toLowerCase() || str === 'me' || str === 'self') {
       return self;
-    } else if (str === enemy.name) {
+    } else if (str === enemy.name.toLowerCase()) {
       return enemy;
     } else {
       return 'unknown';
     }
   }
 
+  // Format the input line, handling case issues.
   function handleInputs(input) {
     var output = [];
 
     _.each(input.split(' '), function(item, index){
-      if (index === 2) {
-        output.push(item);
-      } else {
-        output.push(caseHandler(item));
+      if (index === 0) { // spell
+        output.push(capitalize(item));
+      } else if (index === 1) { // target
+        output.push(lowerCase(item));
+      } else { // area
+        output.push(lowerCase(item));
       }
     });
     return output;
   }
 
-  // expect format 'spell target <optional area>'
+  // expect format as 'spell target <optional area>'
   var inputs = handleInputs(line);
   if (inputs.length < 2) {
     return self.name + ' panicked and failed to act!';

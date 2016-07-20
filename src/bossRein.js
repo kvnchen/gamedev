@@ -40,9 +40,13 @@ Reingod.prototype.resolveSpell = function (spell, area) {
   var outputStr = '',
       self = this;
 
-  // default to face
+  // default and aliases
   if (area === undefined) {
     area = 'face';
+  } 
+
+  if (area === 'axe') {
+    area = 'wound';
   }
 
   if (!_.contains(this.targetAreas, area)) {
