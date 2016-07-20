@@ -64,12 +64,15 @@ Player.prototype.getWeapon = function() {
 Player.prototype.getStatus = function() {
   var status = 'Status of ' + this.name + ':\n'
              + 'Current health: ' + this.currentHealth + '/' + this.maxHealth + '\n'
-             + 'Known Spells: \n' + util.getAllNamesAndDesc(this.spells) + ' \n\n'
-             + 'Known Runes: ' + util.getArrayProp(this.runes) + ' \n'
-             + 'Equipped Weapon: ' + util.getNameAndDesc(this.weapon) + '\n'
-             + 'Equipped Armor: ' + util.getNameAndDesc(this.armor)+ '\n'
-             + 'Wealth: ' + this.getWealth() + ' gold coins\n'
-             + 'Debuffs: ' + util.getArrayProp(this.debuffs) + '\n';
+             + 'Known Spells: \n' + util.getAllNamesAndDesc(this.spells) + ' \n'
+
+      // NOTE: Currently not relevant to play demo
+             // + 'Known Runes: ' + util.getArrayProp(this.runes) + ' \n'
+             // + 'Equipped Weapon: ' + util.getNameAndDesc(this.weapon) + '\n'
+             // + 'Equipped Armor: ' + util.getNameAndDesc(this.armor)+ '\n'
+             // + 'Wealth: ' + this.getWealth() + ' gold coins\n'
+             // + 'Debuffs: ' + util.getArrayProp(this.debuffs) + '\n'
+             ;
 
   return status;
 };

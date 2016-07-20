@@ -14,32 +14,52 @@ function startGame(player, enemy) {
   });
 
   var output = '',
-      gameState = 'intro';
-      
+      gameState = 'getName',
+      introCounter = 0;
+
+  var introMessages = [
+    'This is a brief summary of your avatar:\n',
+    '\nHmm, it seems trouble has arrived.\nThis will be your opponent:\n',
+    '\nI wish you the best of luck.\n'
+  ];
+
+  var introStatuses = [
+    player,
+    enemy
+  ];
 
   // Intro - get player name
   console.log('\nWelcome to this demo!\n\nWhat is your name?\n');
   rl.setPrompt('Your name > ');
   rl.prompt();
 
-  // sets the player name and displays short intro
-  function intro(line) {
+
+  function getName(line) {
     if (line === '') {
       console.log('Your name, oh silent one?\n');
       rl.prompt();
     } else {
       console.log('\nGreetings, ' + line + '!\n');
-      gameState = 'combat';
-
       player.name = line;
-      console.log('This is a brief summary of your avatar:\n');
-      console.log(player.getStatus());
-      console.log('Hmm, it seems trouble has arrived.');
-      console.log('This will be your opponent:\n');
-      console.log(enemy.getStatus());
-      console.log('\nI wish you the best of luck.\n');
-      
+      gameState = 'intro';
+
+      rl.setPrompt('Press enter to continue.');
+      intro();
+    }
+  }
+
+  // Exposition dump, feed user info in blocks when user presses enter
+  function intro() {
+    if (introCounter === 2) {
+      console.log(introMessages[introCounter]);
+      gameState = 'combat';
       rl.setPrompt('Your command > ');
+      rl.prompt();
+    } else {
+      console.log(introMessages[introCounter]);
+      console.log(introStatuses[introCounter].getStatus());
+      
+      introCounter++;
       rl.prompt();
     }
   }
@@ -97,7 +117,8 @@ function startGame(player, enemy) {
     var helpMsg = '\nFor a summary of your player status, type \'status\'\n' +
                   '\nTo see the enemy status, type \'status\' followed by the enemy name.\nExample: \'status reingod\'\n' +
                   '\nTo cast a spell, type the spell name, followed by the target, and optionally a target area.\n' + 
-                  '\nExample: To cast the spell \'Ignite\' on Reingod, type \'ignite reingod\'\n';
+                  '\nExample: To cast the spell \'Ignite\' on Reingod, type \'ignite reingod\'\n' + 
+                  '\nExample 2: \'pull reingod wound\'\n';
     console.log(helpMsg);
     rl.prompt();
   }
@@ -129,7 +150,7 @@ function startGame(player, enemy) {
       rl.close();
     } else {
       var inputs = line.split(' ');
-      if (line === '') {
+      if (line === '' && gameState !== 'intro') {
         console.log('\nType help for a list of commands.\n');
         rl.prompt();
       } else if (line === 'help') {
@@ -143,8 +164,10 @@ function startGame(player, enemy) {
         } else {
           rl.close();
         }
+      } else if (gameState === 'getName') {
+        getName(line);
       } else if (gameState === 'intro') {
-        intro(line);
+        intro();
       } else {
         handleCombat(line);
       }
