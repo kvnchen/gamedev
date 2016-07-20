@@ -146,7 +146,7 @@ function startGame(player, enemy) {
 
   // handle player input
   rl.on('line', function(line){
-    if (line === 'quit' || line === 'exit' || line === 'close' || line === 'fuck' || line === 'this game is garbage') {
+    if (line === 'quit' || line === 'exit' || line === 'close' || line === 'this game is garbage') {
       rl.close();
     } else {
       var inputs = line.split(' ');

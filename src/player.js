@@ -71,8 +71,8 @@ Player.prototype.getStatus = function() {
              // + 'Equipped Weapon: ' + util.getNameAndDesc(this.weapon) + '\n'
              // + 'Equipped Armor: ' + util.getNameAndDesc(this.armor)+ '\n'
              // + 'Wealth: ' + this.getWealth() + ' gold coins\n'
-             // + 'Debuffs: ' + util.getArrayProp(this.debuffs) + '\n'
-             ;
+             
+             + 'Debuffs: ' + util.getArrayProp(this.debuffs) + '\n';
 
   return status;
 };
