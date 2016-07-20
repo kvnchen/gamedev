@@ -4,7 +4,8 @@
 
 var _ = require('underscore'),
     util = require('../utils/util'),
-    readline = require('readline'); 
+    readline = require('readline'),
+    Tutorial = require('./tutorial'); 
 
 function startGame(player, enemy) {
   var rl = readline.createInterface({
@@ -14,19 +15,9 @@ function startGame(player, enemy) {
   });
 
   var output = '',
-      gameState = 'getName',
-      introCounter = 0;
+      gameState = 'getName';
 
-  var introMessages = [
-    '\nThis is a brief summary of your avatar:\n',
-    '\nHmm, it seems trouble has arrived.\nThis will be your opponent:\n',
-    '\nI wish you the best of luck.\n'
-  ];
-
-  var introStatuses = [
-    player,
-    enemy
-  ];
+  var tutorial = new Tutorial(player, enemy);
 
   // Intro - get player name
   console.log('\nWelcome to this demo!\n\nWhat is your name?\n');
@@ -36,27 +27,13 @@ function startGame(player, enemy) {
 
   function getName(line) {
     if (line === '') {
-      console.log('Your name, oh silent one?\n');
+      console.log('\nYour name, oh silent one?\n');
     } else {
       console.log('\nGreetings, ' + line + '!\n');
       player.name = line;
       gameState = 'intro';
 
       rl.setPrompt('Press enter to continue.');
-    }
-  }
-
-  // Exposition dump, feed user info in blocks when user presses enter
-  function intro() {
-    if (introCounter === 2) {
-      console.log(introMessages[introCounter]);
-      gameState = 'combat';
-      rl.setPrompt('Your command > ');
-    } else {
-      console.log(introMessages[introCounter]);
-      console.log(introStatuses[introCounter].getStatus());
-      
-      introCounter++;
     }
   }
   
@@ -134,13 +111,20 @@ function startGame(player, enemy) {
     console.log('Good luck\n');
   }
 
+  function checkIntroCompletion() {
+    if (tutorial.introCounter === 3) {
+      gameState = 'combat';
+      rl.setPrompt('Your command > ');
+    }
+  }
+
   // handle player input
   rl.on('line', function(line){
     if (line === 'quit' || line === 'exit' || line === 'close' || line === 'this game is garbage') {
       rl.close();
     } else {
       var inputs = line.split(' ');
-      if (line === '' && gameState !== 'intro') {
+      if (line === '' && gameState !== 'intro' && gameState !== 'getName') {
         console.log('\nType help for a list of commands.\n');
       } else if (line === 'help') {
         help();
@@ -148,8 +132,8 @@ function startGame(player, enemy) {
         getStatus(inputs);
       } else if (line === 'skip' || line === 's') {
         if (gameState === 'intro') {
-          introCounter = 2;
-          intro();
+          tutorial.intro(2);
+          checkIntroCompletion();
         } else {
           console.log('Can\'t skip this part.\n');
         }
@@ -164,7 +148,8 @@ function startGame(player, enemy) {
       } else if (gameState === 'getName') {
         getName(line);
       } else if (gameState === 'intro') {
-        intro();
+        tutorial.intro();
+        checkIntroCompletion();
       } else {
         handleCombat(line);
       }
