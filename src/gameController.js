@@ -18,7 +18,7 @@ function startGame(player, enemy) {
       introCounter = 0;
 
   var introMessages = [
-    'This is a brief summary of your avatar:\n',
+    '\nThis is a brief summary of your avatar:\n',
     '\nHmm, it seems trouble has arrived.\nThis will be your opponent:\n',
     '\nI wish you the best of luck.\n'
   ];
@@ -37,14 +37,12 @@ function startGame(player, enemy) {
   function getName(line) {
     if (line === '') {
       console.log('Your name, oh silent one?\n');
-      rl.prompt();
     } else {
       console.log('\nGreetings, ' + line + '!\n');
       player.name = line;
       gameState = 'intro';
 
       rl.setPrompt('Press enter to continue.');
-      intro();
     }
   }
 
@@ -54,13 +52,11 @@ function startGame(player, enemy) {
       console.log(introMessages[introCounter]);
       gameState = 'combat';
       rl.setPrompt('Your command > ');
-      rl.prompt();
     } else {
       console.log(introMessages[introCounter]);
       console.log(introStatuses[introCounter].getStatus());
       
       introCounter++;
-      rl.prompt();
     }
   }
   
@@ -89,7 +85,6 @@ function startGame(player, enemy) {
     gameState = 'retry';
 
     console.log(msg);
-    rl.prompt();
   }
 
   // Combat input handler
@@ -109,8 +104,6 @@ function startGame(player, enemy) {
       gameOver();
       return;
     }
-    
-    rl.prompt();
   }
 
   function help() {
@@ -120,7 +113,6 @@ function startGame(player, enemy) {
                   '\nExample: To cast the spell \'Ignite\' on Reingod, type \'ignite reingod\'\n' + 
                   '\nExample 2: \'pull reingod wound\'\n';
     console.log(helpMsg);
-    rl.prompt();
   }
 
   function getStatus(inputs) {
@@ -140,8 +132,6 @@ function startGame(player, enemy) {
     
     gameState = 'combat';
     console.log('Good luck\n');
-
-    rl.prompt();
   }
 
   // handle player input
@@ -152,25 +142,24 @@ function startGame(player, enemy) {
       var inputs = line.split(' ');
       if (line === '' && gameState !== 'intro') {
         console.log('\nType help for a list of commands.\n');
-        rl.prompt();
       } else if (line === 'help') {
         help();
       } else if (inputs[0] === 'status') {
         getStatus(inputs);
-        rl.prompt();
       } else if (line === 'skip' || line === 's') {
         if (gameState === 'intro') {
           introCounter = 2;
           intro();
         } else {
           console.log('Can\'t skip this part.\n');
-          rl.prompt();
         }
       } else if (gameState === 'retry') {
         if (line === 'y' || line === 'yes') {
           resetCombat();
+
         } else {
           rl.close();
+          return;
         }
       } else if (gameState === 'getName') {
         getName(line);
@@ -179,6 +168,7 @@ function startGame(player, enemy) {
       } else {
         handleCombat(line);
       }
+      rl.prompt();
     }
   }).on('close',function() {
     console.log('\nThank you for playing this demo!\n');
