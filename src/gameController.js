@@ -15,14 +15,12 @@ function startGame(player, enemy) {
 
   var output = '',
       gameState = 'intro';
-
+      
 
   // Intro - get player name
   console.log('\nWelcome to this demo!\n\nWhat is your name?\n');
-
   rl.setPrompt('Your name > ');
   rl.prompt();
-
 
   // sets the player name and displays short intro
   function intro(line) {
@@ -33,10 +31,9 @@ function startGame(player, enemy) {
       console.log('\nGreetings, ' + line + '!\n');
       gameState = 'combat';
 
-      console.log('This is a brief summary of your avatar:\n');
       player.name = line;
+      console.log('This is a brief summary of your avatar:\n');
       console.log(player.getStatus());
-
       console.log('Hmm, it seems trouble has arrived.');
       console.log('This will be your opponent:\n');
       console.log(enemy.getStatus());
@@ -47,18 +44,32 @@ function startGame(player, enemy) {
     }
   }
   
-
   // Checks if combat should end
   function checkGameOver() {
     if (player.currentHealth === 0) {
       console.log('Game over');
+      gameState = 'lose';
       return true;
     } else if (enemy.currentHealth === 0 || enemy.isPacified) {
       console.log('Victory!');
+      gameState = 'win';
       return true;
     } else {
       return false;
     }
+  }
+
+  function gameOver() {
+    var msg;
+    if (gameState === 'lose') {
+      msg = '\nWould you like to retry?\nYes (y) / No (n)\n';
+    } else {
+      msg = '\nWould you like to play again?\nYes (y) / No (n)\n';
+    }
+    gameState = 'retry';
+
+    console.log(msg);
+    rl.prompt();
   }
 
   // Combat input handler
@@ -67,7 +78,7 @@ function startGame(player, enemy) {
     console.log(output);
     
     if (checkGameOver()) {
-      rl.close();
+      gameOver();
       return;
     }
 
@@ -75,7 +86,7 @@ function startGame(player, enemy) {
     console.log(output);
 
     if (checkGameOver()) {
-      rl.close();
+      gameOver();
       return;
     }
     
@@ -99,9 +110,22 @@ function startGame(player, enemy) {
     }
   }
 
+  function resetCombat() {
+    player.reset();
+    enemy.reset();
+
+    console.log(player.getStatus());
+    console.log(enemy.getStatus());
+    
+    gameState = 'combat';
+    console.log('Good luck\n');
+
+    rl.prompt();
+  }
+
   // get player input
   rl.on('line', function(line){
-    if (line === 'quit' || line === 'exit' || line === 'close') {
+    if (line === 'quit' || line === 'exit' || line === 'close' || line === 'fuck') {
       rl.close();
     } else {
       var inputs = line.split(' ');
@@ -113,6 +137,12 @@ function startGame(player, enemy) {
       } else if (inputs[0] === 'status') {
         getStatus(inputs);
         rl.prompt();
+      } else if (gameState === 'retry') {
+        if (line === 'y' || line === 'yes') {
+          resetCombat();
+        } else {
+          rl.close();
+        }
       } else if (gameState === 'intro') {
         intro(line);
       } else {

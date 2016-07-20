@@ -118,6 +118,11 @@ Player.prototype.removeDebuff = function(debuff) {
   return outputStr;
 };
 
+Player.prototype.removeAllBuffs = function() {
+  this.buffs = [];
+  this.debuffs = [];
+};
+
 // Since spells have contextual effects, the result is processed by either
 // by the target enemy, or the spell, or some combination of both.
 Player.prototype.castSpell = function(spellName, target, area) {
@@ -205,5 +210,10 @@ Player.prototype.getAction = function(line, enemy) {
     return self.castSpell(inputs[0],target);
   }
 };
+
+Player.prototype.reset = function () {
+  this.currentHealth = this.maxHealth;
+  this.removeAllBuffs();
+}
 
 module.exports = Player;

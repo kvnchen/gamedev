@@ -17,14 +17,15 @@ function Reingod() {
     face: ['Ignite'],
     wound: ['Ignite','Push','Pull','Heal']
   };
-  this.woundState = 'frozen';
-  this.nextAction = 'frostBreath';
-  this.actionCounter = 0;
   this.phaseActions = [
     ['frostBreath', 'frostBreath', 'frostBreath', 'charge'],
     ['frostBreath', 'frostBreath', 'frostBreath', 'charge', 'guard'],
     ['frostBreath', 'guard', 'frostBreath', 'distance', 'charge']
   ];
+  // State variables
+  this.woundState = 'frozen';
+  this.nextAction = 'frostBreath';
+  this.actionCounter = 0;
   this.axeTemp = 0;
   this.iceTemp = 0;
   this.isDistanced = false;
@@ -299,5 +300,19 @@ Reingod.prototype.getAction = function(player) {
 
   return outputStr;
 };
+
+// Reset health, state, remove all debuffs
+Reingod.prototype.reset = function () {
+  this.currentHealth = this.maxHealth;
+  this.removeAllBuffs();
+  this.isPacified = false;
+  this.woundState = 'frozen';
+  this.nextAction = 'frostBreath';
+  this.actionCounter = 0;
+  this.axeTemp = 0;
+  this.iceTemp = 0;
+  this.isDistanced = false;
+  this.phase = 0;
+}
 
 module.exports = Reingod;

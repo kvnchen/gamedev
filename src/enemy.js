@@ -85,6 +85,11 @@ Enemy.prototype.removeDebuff = function(debuff) {
   return outputStr;
 };
 
+Enemy.prototype.removeAllBuffs = function() {
+  this.buffs = [];
+  this.debuffs = [];
+};
+
 Enemy.prototype.resolveSpell = function(spell, area) {
   var outputStr = '';
   if (!_.contains(this.targetAreas, area)) {
@@ -122,5 +127,11 @@ Enemy.prototype.handleDebuffs = function() {
 
   return outputStr;
 };
+
+Enemy.prototype.reset = function () {
+  this.currentHealth = this.maxHealth;
+  this.removeAllBuffs();
+  this.isPacified = false;
+}
 
 module.exports = Enemy;
